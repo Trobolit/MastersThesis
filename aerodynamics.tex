@@ -1,5 +1,5 @@
 
-\section{Aircraft force diagram}
+\subsection{Aircraft force diagram}
 The aircraft in question is the EcoSoar; a flying wing.
 It has two control surfaces, one on each wing called elevons.
 In front of each wing a motor and propeller is mounted providing thrust.
@@ -25,7 +25,7 @@ The lift forces, $L_L$ and $L_R$, are functions of airflow over wing outside of 
 
 
 
-\subsection{Aerodynamic Lift force}
+\subsubsection{Aerodynamic Lift force}
 
 The lift force of a wing depends on several factors.
 Mainly: geometrical shape, dynamic pressure and angle of attack.
@@ -79,7 +79,7 @@ where $\alpha$ is in the interval $[-\pi,\pi]$.
     \label{polar}
 \end{figure}
 
-\subsection{Aerodynamic drag}
+\subsubsection{Aerodynamic drag}
 Similarly to aerodynamic lift the wing will also have an aerodynamic drag force, but parallel to the incoming flow and not perpendicular as lift.
 The drag is also modeled like so:
 \begin{equation}
@@ -95,7 +95,7 @@ where the coefficient of drag, $C_D$, can also be experimentally obtained as in 
 \end{figure}
 
 
-\subsection{Lift and drag in body frame}
+\subsubsection{Lift and drag in body frame}
 
 Since the aerodynamic lift and drag forces are relative the incoming airflow, i.e. functions of the angle of attack, $\alpha$, the body frame Lift and Drag have to transformed:
 \begin{equation}\begin{split}
@@ -128,7 +128,7 @@ which simplify into:
 where $v = \sqrt{v_x^2 + v_y^2 + v_z^2}$.
 
 
-\section{Moment due to force}
+\subsection{Moment due to force}
 
 Any force not acting at the center of gravity will produce a moment around c.g.
 The moment of a force is:
@@ -144,7 +144,7 @@ With our assumptions the above equation can be written as:
     F_y r_x - F_x r_y \end{matrix} \right]
 \end{equation}
 
-\subsection{Pitching moment}
+\subsubsection{Pitching moment}
 Lift due to camber on a wing acts at ~50\% of the cord line.
 Lift due to angle of attack acts at roughly 25\% of the cord line.
 This makes the force acting point, center of pressure, move along the cord line when angle of attack and aircraft velocity changes.
@@ -159,11 +159,11 @@ The pitching moment due to lift can now be expressed as:
 \end{equation}
 where $l$ is the characteristic length of the wing, usually taken as the mean cord for pitching moments and the wingspan for rolling and yawing moments.
 
-\section{Equations of motion}
+\subsection{Equations of motion}
 
 The equations of motion can be split into three parts: one part due to gravity, one part due to the rigid body frame being an accelerated reference frame, and one part due to aerodynamic forces.
 
-\subsection{Attitude}
+\subsubsection{Attitude}
 The attitude is represented by a quaternion:
 \begin{equation}
 \bar{q} = [q_0, q_1, q_2, q_3]^T
@@ -172,7 +172,7 @@ Any vector, $\bar{r}_w$, in world frame can be represented in the body frame by 
 \begin{equation}
     \bar{r}_b = \bar{q} \bar{r}_w \bar{q^*}
 \end{equation}
-\subsection{Gravity}
+\subsubsection{Gravity}
 In the case of gravity, $\left[\begin{smallmatrix}0\\0\\mg\end{smallmatrix}\right]_w$, the force, $m \bar{g}$, becomes
 \begin{equation}
 m \dot{\bar{v}}_b = \left[ \begin{matrix}

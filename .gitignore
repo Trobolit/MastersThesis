@@ -27,8 +27,8 @@
 
 #Disallow syncing of pdfs
 # *.pdf bad idea as some figures are in pdf format, specifically ban main.pdf instead
-main.pdf
-
+#main.pdf
+# Actually: lets push main.pdf as well for others do quickly be able to download latest version.
 
 #custom
 *.log
