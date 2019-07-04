@@ -1,0 +1,79 @@
+The aircraft considered here has no tail nor real body.
+The only surfaces providing relevant forces due to sideslip are the winglets.
+
+The winglets each have an area $S_W$ and are flat plate wings which will generate aerodynamic lift and drag forces due to $\beta$ providing an angle of attack in their reference frame.
+
+$\beta$ can be, similarly to $\alpha$, be expressed in polar coordinates:
+\begin{equation}\begin{split}
+    v_x =& \, r \, cos(\beta) \\
+    v_y =& \, r \, sin(\beta) \\
+    r =& \sqrt{v_x^2 + v_y^2}
+\end{split}\end{equation}
+
+
+
+The aerodynamic forces, $L_\beta$ and $D_\beta$, from the winglets convert into body forces, directed as in figure \ref{airplane}, similarly to lift and drag from the main wings:
+\begin{equation}\begin{split}
+L_{W_i} &= cos(\beta) L_\beta +  sin(\beta)D_\beta \\
+D_{W_i} & = -sin(\beta) L_\beta + cos(\beta) D_\beta
+\end{split}\end{equation}
+where
+\begin{equation}\begin{split}
+L_\beta &= Q C_{L_\beta} S_W \\
+D_\beta & = Q C_{D_\beta} S_W
+\end{split}\end{equation}
+and $C_{k_\beta}$ are the lift and drag coefficients for each winglet, here assumed to be flat plates.
+$v_z$ can be assumed to be negligible in the following equations since it will have no measurable effect on the winglets.
+If we assume $v_z$ to be negligible then the equations simplify into
+\begin{equation}\begin{split}
+L_{W_i} &= 
+    \frac{\rho v S_W}{2}  \left( C_{L_\beta} v_x + v_y C_{D_\beta} \right) \\
+%
+D_{W_i} &= 
+    \frac{\rho v S_W}{2 }  \left(-v_y C_{L_\beta} + v_x C_{D_\beta} \right)
+\end{split}\end{equation}
+
+If the sideslip angle, $\beta$, is small (which implies $v_y$ small) the lift/drag coefficients can be approximated as 
+\begin{equation}\begin{split}
+    C_{L_\beta} \approx& \frac{d C_{L_\beta}}{d \beta} \big\vert_{\beta=0} \, \beta \\
+    C_{D_\beta} \approx& 0
+\end{split}\end{equation}
+which results in:
+\begin{equation}\begin{split}
+L_{W_i} &\approx 
+    \frac{\rho v S_W}{2} \frac{d C_{L_\beta}}{d \beta} \big\vert_{\beta=0} \, \beta \, v_x  \\
+%
+D_{W_i} &\approx 0
+\end{split}\end{equation}
+This gives us, in body frame, one restoring force from each winglet roughly proportional to the forward velocity squared of the aircraft and the sideslip angle..
+The forces have the same magnitude and direction on both sides of the aircraft.
+
+
+
+\subsubsection{Restoring moment}
+
+$D_{W_i}$ are symmetrical on both sides and only create an acceleration in $y$.
+They do not generate any moment.
+$L_{W_i}$, however, act asymmetrically around c.g. and do generate a moment/torque (note that the force $L_{W_R}$ generates a negative torque around $z$ in our coordinate system):
+\begin{equation}
+    M_z = L_{W_L} x_W + L_{W_R} x_R = - \rho v S_W \frac{d C_{L_\beta}}{d \beta} \big\vert_{\beta=0} \, \beta \, v_x x_W
+\end{equation}
+
+\subsubsection{Non linear Forces and Moments}
+If we do not make the assumption that $\beta$ is small we instead get the equations:
+\begin{equation}\begin{split}
+    M_z =& - \, x_W \rho v S_W  \left( C_{L_\beta}(\beta) v_x + v_y C_{D_\beta}(\beta) \right) \\
+    D_{W} =& \rho v S_W \left(-v_y C_{L_\beta}(\beta) + v_x C_{D_\beta}(\beta) \right)
+\end{split}\end{equation}
+where $D_W = D_{W_L} + D_{W_R}$, and the coefficients of lift and drag are as shown in the figures above, but functions of $\beta$ instead of $\alpha$ as $\beta$ becomes the effective angle of attack in the winglets reference frame.
+
+
+
+\subsubsection{Rolling moment due to sideslip}
+
+The center of the winglet is slightly offset in the $z$-direction from the c.g. by distance $z_W$. 
+Given the forces $L_{W_i}$ the rolling moment due to sideslip, $M_x$, is simply
+\begin{equation}
+    M_x = z_W (L_{W_L} + L_{W_R})
+\end{equation}
+

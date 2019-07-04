@@ -1,0 +1,9 @@
+Similarly the restoring moment due to yaw rate can be obtained from the following integral:
+\begin{equation}\begin{split}
+    M_z = 
+    % restmom yaw rate
+    & \int_{-b/2}^{b/2} y \left( \frac{1}{2} \rho \sqrt{v_{x,l}^2 + v_z^2} \left( -C_L v_z + C_D v_{x,l} \right) \right) c(y) dy
+\end{split}\end{equation}
+where $v_{x,l} = v_x - \omega_z y$.
+
+For the controller some linear approximation has to be found, similarly as to restoring moment due to roll rate.

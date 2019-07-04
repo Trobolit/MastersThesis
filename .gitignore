@@ -1,0 +1,38 @@
+#from some git
+*.aux
+*.glo
+*.idx
+*.log
+*.toc
+*.ist
+*.acn
+*.acr
+*.alg
+*.bbl
+*.blg
+*.dvi
+*.glg
+*.gls
+*.ilg
+*.ind
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.out
+*.synctex.gz
+*.fdb_latexmk
+
+
+#Disallow syncing of pdfs
+# *.pdf bad idea as some figures are in pdf format, specifically ban main.pdf instead
+main.pdf
+
+
+#custom
+*.log
+*.run.xml
+*.toc
+*.cls
+*.DS_Store

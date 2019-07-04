@@ -1,0 +1,24 @@
+\section{Assumptions}
+
+\begin{itemize}
+    \item There is no external wind and so $v_{\infty}$ is replaced with $v$ which is the aircrafts velocity through the air.
+
+    \item All forces operate on points in the $x-y$ plane, i.e. no offset in the $z$-direction (with the notable exception of the winglet forces). Forces may still have a $z$-component though.
+
+    \item The propeller wake is unaffected by aircraft velocity, i.e. only determined by propeller speed.
+
+    \item Airflow outside of wake is only determined by aircraft velocity.
+
+    \item The aerodynamic centre (a.c.) is static and does not move with changes in speed and pressure. The moment around it, however, will vary and thus account for the effects of the a.c. movement.
+
+    \item Airflow speed in wake is proportional to propeller rotational speed, $v_w = b_w \omega_i$, where $b_w$ is a constant.
+
+    \item The principal moments axis align with the symmetry plane; only diagonal elements in the inertia matrix aligned with the body frame coordinate axis.
+
+    \item Roll moment due to sideslip angle, negligible due to lack of tail with verical offset from c.g.
+
+    \item Yawing moment due to roll rate is negligible due to the lack of a tail.
+
+    \item Forces and moments due to acceleration are not explicitly calculated; they are already included in  dynamic model since it is based on forces.
+
+\end{itemize}

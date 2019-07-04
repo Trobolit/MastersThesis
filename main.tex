@@ -1,0 +1,209 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{cancel}
+\usepackage[margin=3cm]{geometry}
+%\usepackage{enumitem} % Allow tight lists
+\usepackage{gensymb} % for degree symbol
+\usepackage{tikzscale}
+
+%\title{Robust control system development for VTOL-to-fixed wing flight %transition with the EcoSoar UAV}
+%\author{Robert Hedman}
+%\date{April 2019}
+
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        %\vspace*{1cm}
+ 
+        \huge
+        \textbf{Robust control system development for VTOL-to-fixed wing flight transition with the EcoSoar UAV}
+ 
+        \vspace{0.5cm}
+        \LARGE
+        A thesis in Automatic Control
+ 
+        \vspace{1.5cm}
+ 
+        \textbf{Robert Hedman\\}
+        \today
+ 
+        \vfill
+ 
+        A thesis presented for the degree of\\
+        Masters of Science / Civil Engineer
+ 
+        \vspace{0.8cm}
+ 
+        %\includegraphics[width=0.4\textwidth]{university}
+ 
+        \Large
+        Department of Computer Science, Electrical and Space Engineering\\
+        Luleå University of Technology\\
+        \textit{Supervisors:} K. \textsc{Atta}, K. \textsc{Kochersberger}\\
+        \textit{Examinator:} G. \textsc{Nikolakopoulos}
+ 
+    \end{center}
+\end{titlepage}
+
+\abstract
+This is wehere we write about the abstract.
+asdasdasd
+asd
+asdasdjhsdkjhdsak dikd  sdoj asodj asdoja sdojas do
+
+\newpage
+\section*{\textit{Acknowledgements}}
+
+Thank \textbf{Khalid}, (George), Mr. K, Avory, Wife, etc.
+
+[Lets see if they require rent before adding below]\\
+I also want to extend a very warm thank you to Montford Special Needs College in Malawi for allowing me to stay there together with my wife during this thesis.
+The staff also provided all the support needed to become integrated with the local culture and helping out with practical issues such as getting a car, finding the hospital and providing a safe circle of friends.
+
+\newpage
+
+\tableofcontents
+
+\input{listvars}
+\newpage
+
+
+
+---
+
+\section{Background}
+EcoSoar background, Malawi, lead into VTOL motivation
+
+\section{Problem Forumulation}
+To create a mathematical model of the ecosoar, then implement a model based controller that can handle both hovering, transition into flying and flying.
+
+\section{Needed math}
+\subsection{General State Space background}
+Diff. Eqs, state feedback, observability, controllability.
+Are obs and contr. applicable on non linear systems?
+MIMO
+\subsection{State estimation/observers?}
+\subsection{Feedback Linearization}
+\subsubsection{Mimo: Lie derivatives and brackets}
+\subsubsection{Decoupling matrix}
+\subsection{L1 parameter compensation/estimation}
+\subsection{Reference Frames}
+NED, World+body frame
+\subsection{Accellerated reference frames}
+\subsection{Quaternions}
+Motivate through problems with Euler angles, RPY, etc
+Rotation matrix
+Cover basic quaternion math,
+world/bodyframe conversions
+\subsubsection{Madgwick filter}
+\subsection{Equations of Motion, in body frame}
+
+
+\subsection {Basic aerodynamics}
+\input{basicaero}
+\begin{itemize}
+        \item Bernoulli Equation, center of Pressure, etc
+        \item Basic plate theory
+        \item Aerodynamic center    
+        \item Aerodynamic forces and Moments
+        \begin{itemize}
+            \item Lift, and moment, due to camber
+            \item Lift due to angle of attack
+            \item Drag
+            \item Forces/Moments due to airflow over Ailerons and Elevators
+            \item Forces and Moments due to sideslip and roll
+            \item Forces/Moment due to roll rate, pitch rate and yaw rate
+        \end{itemize}
+        \item Propeller efficiency, airspeed, wake velocity
+    \end{itemize}
+
+\section{Mathematical Model of EcoSoar}
+
+
+\input{assumptions}
+
+\input{coordsys}
+
+\input{aerodynamics}
+
+\subsection{Forces and moments due to accelerated body reference frame}
+\input{accrefframe}
+
+
+\subsection{elevons}
+\input{elevons}
+
+\subsection{Winglets, forces and moments due to sideslip}
+\input{sideslip}
+
+\subsection{Propeller Thrust}
+\input{thrust}
+
+\subsection{Restoring moment due to roll rate}
+\input{restmomroll}
+
+\subsection{Restoring moment due to yaw rate}
+\input{restmomyaw}
+
+\subsection{Rolling moment due to yaw rate}
+\input{rollmomyaw}
+
+\subsection{Restoring moment due to pitch rate}
+\input{restmompitch}
+
+
+\input{actuatordyn}
+
+
+\input{fulleqs}
+
+\section{Numerical approximations for Coefficients}
+Since the functions describing the coefficient of lift and drag are empirically obtained analytical expressions are helpful to obtain.
+Below are two approximations that closely follow the characteristics of the coefficients in the graphs above.
+The functions will have to be adapted for the EcoSoar.
+
+\begin{equation}
+C_D(\alpha) = 0.2663 \alpha^4 -1.676 \alpha^3 + 2.555 \alpha^2 + 0.2559 \alpha + 0.2% ; % 0.2 was 0 before camber guess
+\end{equation}
+where $\alpha$ is in radians in the interval $[0,\pi]$.
+
+\begin{equation}\begin{split}
+    C_D(\alpha) &= 2.939 10^{-6} \alpha^3 -0.0009205 \alpha^2 + 0.05943 \alpha -0.00613 \\
+    +&
+    0.85 e^{ -0.1 (\alpha - 10)^2 - 1 } + 0.4 e^{ -0.1 (\alpha - 5)^2 + -1 } - 0.15 e^{ -0.01 (\alpha - 20)^2 + -1 }
+    + 0.3
+\end{split}\end{equation}
+where $\alpha$ is in degrees in the interval $[0,90]$.
+To get the full range mirror and flip it across $\alpha = 90 \degree$.
+You will need to adjust the $0.3$ offset accordingly as well since it is added due to camber.
+
+
+
+\section{EcoSoar}
+\subsection{CAD model}
+\subsection{modifications to dual engine}
+3D printing, building, etc
+\subsection{Parameter estimation/declarations}
+
+\section{\textbf{Robust controller development and Implementation}}
+\subsection{Simulink}
+\subsection{Gazeebo?}
+\subsection{X-plane 11}
+
+
+\section{Results}
+\subsection{Performance in Simulations}
+\subsection{Performance in reality}
+
+\section{Conclusion}
+
+\end{document}\grid
+
+
+
+ Sort above into (Abstract), Introduction/Background, Modelling, Controller, Results, Conclusion, and any other titles that might be suitable.
