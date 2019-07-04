@@ -31,15 +31,16 @@
  
         \textbf{Robert Hedman\\}
         \today
+        \vspace{0.6cm}
+
+        \includegraphics[width=0.9\textwidth]{coverphoto.jpeg}
  
         \vfill
  
         A thesis presented for the degree of\\
         Masters of Science / Civil Engineer
  
-        \vspace{0.8cm}
- 
-        %\includegraphics[width=0.4\textwidth]{university}
+        \vspace{0.6cm}
  
         \Large
         Department of Computer Science, Electrical and Space Engineering\\
@@ -78,10 +79,31 @@ The staff also provided all the support needed to become integrated with the loc
 ---
 
 \section{Background}
-EcoSoar background, Malawi, lead into VTOL motivation
+Virginia Tech, a University in Virginia, USA, has developed a fixed wing drone called the EcoSoar; a flying wing.
+It is an aircraft designed for fabrication, operation and maintenance in low-
+resource environments.
+The total cost of one EcoSoar is only around 350 USD when costs for all tools and materials have been accounted for and spread over ten aircraft.
+
+EcoSoar has been successfully flown in Malawi at
+the test corridor established by UNICEF in Kasungu,
+where a simulated payload of dried blood spot sam-
+ples (used for HIV testing) was delivered 19 km from
+a remote health clinic to the Kasungu airport. The
+aircraft is constructed of poster-board and 3D printed
+parts, making it easy to source in Malawi and low-
+cost to repair if damaged.
+
+Many flight operations occurring in Africa are converging on hybrid aircraft designs where the aircraft functions as a quadcopter in takeoff and landing but is capable of higher speed flight in a fixed wing configuration.
+
+EcoSoar can currently be launched with a big bungee-cord or with a custom built launcher. It thus needs a field to both take off and land in since it can only land on its belly similar to that of any normal aircraft.
+Modifying the EcoSoar to have two engines, one on the front of each wing, instead of the current design of having one at the back, might allow it to hover, take off and land vertically eliminating the need for a launching system as well as the requirement of a big field for take-off and landing.
+
+Adding VTOL capacity to this drone would greatly increase its range of possible missions and thus help humanitarian efforts centered around EcoSoar in Malawi.
+
+To achieve VTOL not only is hardware modifications necessary but also a new control scheme is necessary.
 
 \section{Problem Forumulation}
-To create a mathematical model of the ecosoar, then implement a model based controller that can handle both hovering, transition into flying and flying.
+This thesis will attempt to solve the problem of mathematically modeling the EcoSoar, develop a VTOL capable model based controller that can handle both hovering, transitioning into flying and flying, and finally implement the controller on the Pixhawk controller onboard the aircraft.
 
 \section{Needed math}
 \subsection{General State Space background}
@@ -202,6 +224,24 @@ You will need to adjust the $0.3$ offset accordingly as well since it is added d
 \subsection{Performance in reality}
 
 \section{Conclusion}
+
+\begin{thebibliography}{9}
+\bibitem{latexcompanion} 
+Michel Goossens, Frank Mittelbach, and Alexander Samarin. 
+\textit{The \LaTeX\ Companion}. 
+Addison-Wesley, Reading, Massachusetts, 1993.
+ 
+\bibitem{einstein} 
+Albert Einstein. 
+\textit{Zur Elektrodynamik bewegter K{\"o}rper}. (German) 
+[\textit{On the electrodynamics of moving bodies}]. 
+Annalen der Physik, 322(10):891–921, 1905.
+ 
+\bibitem{knuthwebsite} 
+Knuth: Computers and Typesetting,
+\\\texttt{http://www-cs-faculty.stanford.edu/\~{}uno/abcde.html}
+\end{thebibliography}
+
 
 \end{document}\grid
 
