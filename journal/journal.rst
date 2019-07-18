@@ -15,6 +15,11 @@ Nonlinear simulator working.
 A lot of parameters are estimated.
 Comments in source code clarify which ones are measured, estimated and guessed.
 Especially lift/drag/angle of attack functions are estimates right now.
+The lift curve is actually pretty close at zero angle of attack.
+The lift curve then is not too bad, right shape, right order of magnitude.
+The Drag is overall higher than the indicated measurements found online, but I think it is close enough until I need to tune the finished controller.
+
+
 
 Controller
 **********
@@ -28,6 +33,22 @@ What I have:
 Emil Fresks P2 quaternion controller -> translator -> actuation signals
 
 The translator will be the focus of the rest of my thesis.
+
+Linearize
++++++++++
+
+I tried to linearize the full system around a general working point.
+That works fine.
+But then trying to find the steady state inputs for that state didn't work.
+Can't control 10+ states with only 3 inputs unless the dynamics are generally stable.
+In this case they are not.
+
+Limiting the states to only rotational states and disregarding actuator dynamics produced a trivial solution, put all actuators to zero.
+Also makes sense since I haven't included pitch due to camber.
+This leads me to think a decoupler might work well.
+
+Decoupler
++++++++++
 
 Logically one can argue that a delta thrust provides rotation around z axis.
 A delta Elevon actuation provides torque around x axis, and a joint Elevon actuation generates torque around y-axis. (Yaw,roll,pitch).
