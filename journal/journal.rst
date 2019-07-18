@@ -59,3 +59,9 @@ Yaw damping at flying speeds is probably prominent, roll damping is very promine
 
 *Hm.*
 
+I disabled all saturations and observer how big the signals got.
+Big.
+Upon closer inspection the decoupler contain terms that are as big as 10^90+.
+Divisions in the normal case takes care of this but any noise is multiplied extremely.
+This is unfeasible.
+I saw similar behavior when solving the feedback linearization.
