@@ -102,3 +102,16 @@ Maybe, maybe, this removes the extreme sensitivity of the actuation signals.
 I could see that a differential thrust makes the joint deflection point at which to apply the differential deflection extremely sensitive.
 This is just my intuition right now.
 If this works maybe one should do proper math on this?
+
+**Update:**
+The controller works, sort of.
+I tuned it during simulations and had a full sucessful flight with hover take-off, normal flight, and hover-land.
+I still need to tune the different axis separately, but I think that makes sense.
+Each rotational axis represents quite the different system from the others.
+45 degrees off in yaw is not too bad, and is allowed to take time to get back, but 45 degrees off in pitch is terrible.
+
+So. Plan now is to rerun simulations but have the torque-translator block output what would have been the effective gains to a scope for inspections.
+I also have problems with oscillations and bang-bang happening around pitch sometimes.
+Will look into that as well.
+If this entire solution seems promising afte rmuch scrutiny I may have found a solution to the P2-translate-actuation signal problem.
+Now I just need to define it mathematically, try to work out my solution with maths, implement it in c-code, etc.
