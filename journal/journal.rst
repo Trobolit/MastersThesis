@@ -86,3 +86,18 @@ Upon closer inspection the decoupler contain terms that are as big as 10^90+.
 Divisions in the normal case takes care of this but any noise is multiplied extremely.
 This is unfeasible.
 I saw similar behavior when solving the feedback linearization.
+
+Current attempt
+^^^^^^^^^^^^^^^
+Maybe by not forcing the actuation signals to be deltaElevon, jointElevon and deltaThrust we could instead do:
+
+- Calculate joint thrust to keep altitude with PID as now,
+- Calculate delta thrust for yaw moment
+- We now have airflow over wings, so we divide the wanted pitch and roll moments by two, and solving each wing separately.
+- First we solve joint deflection since it is the bigger equation.
+- Secondly we solve roll given all information above.
+
+Maybe, maybe, this removes the extreme sensitivity of the actuation signals.
+I could see that a differential thrust makes the joint deflection point at which to apply the differential deflection extremely sensitive.
+This is just my intuition right now.
+If this works maybe one should do proper math on this?
