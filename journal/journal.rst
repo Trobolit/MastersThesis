@@ -5,6 +5,7 @@ Thesis Journal
 
 *Better late than never.*
 
+.. contents::
 
 Current status
 ^^^^^^^^^^^^^^
