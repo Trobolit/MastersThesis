@@ -115,3 +115,9 @@ I also have problems with oscillations and bang-bang happening around pitch some
 Will look into that as well.
 If this entire solution seems promising afte rmuch scrutiny I may have found a solution to the P2-translate-actuation signal problem.
 Now I just need to define it mathematically, try to work out my solution with maths, implement it in c-code, etc.
+
+*Misc Notes*:
+The matlab command ``simplify`` is a major player in the induction of really big numbers into the equations.
+Because the equations contain decimal numbers from physical parameters (otherwise the equations would probably become way too big, I might try to work around this later) it can shorten the equations by finding common denominators.
+This leads to multiplications generating these huge numbers.
+Yes the length of the equation is shorter, but the simplifications do not make real sense.
