@@ -1,0 +1,115 @@
+\subsection{Full equations of motion}
+
+We now include all terms to find the full state space equations:
+
+\begin{equation}
+\left[
+\begin{matrix}
+    \dot{v_x} \\
+    \dot{v_y} \\
+    \dot{v_z} \\
+    \dot{\omega_x} \\ 
+    \dot{\omega_y} \\
+    \dot{\omega_z} \\
+    \dot{q_0} \\
+    \dot{q_1} \\
+    \dot{q_2} \\
+    \dot{q_3} \\
+    \dot{\delta_L} \\
+    \dot{\delta_R} \\
+    \dot{\omega_L} \\
+    \dot{\omega_R} 
+\end{matrix} \right] 
+=
+\left[ \begin{matrix}
+% vxdot
+ 2g(q_1 q_3 + q_0 q_2)
+    - \sum_i \left(
+     D_i
+    + D_{i,T}
+    + D_{W_i}
+    + D_{\alpha_i}
+    + D_{\alpha_{i,T}} \right)
+    + T_L + T_R \\
+ %vy dot
+ 2g(q_2 q_3 + q_0 q_1)
+ + L_{W_L} + L_{W_R} \\
+ %vz dot
+ g(q_0^2 - q_1^2 - q_2^2 + q_3^2)
+ + \sum_i \left( L_i + F_i + F_{i_T}
+  \right) \\
+ % omegadots
+f_1/I_x \\
+f_2/I_y \\
+f_3/I_z \\
+% qdots
+        \frac{1}{2} (q_1 \omega_x + q_2 \omega_y + q_3 \omega_z) & \\
+        \frac{1}{2} (q_2 \omega_z - q_3 \omega_y - q_0 \omega_x) & \\
+        \frac{1}{2} (q_3 \omega_x - q_0 \omega_y - q_1 \omega_z) & \\
+        \frac{1}{2} (q_1 \omega_y - q_2 \omega_x - q_0 \omega_z) & \\
+% actuator dots
+K_{\delta_L} (-\delta_L + u_{\delta_L}) \\
+K_{\delta_R} (-\delta_R + u_{\delta_R}) \\
+K_{\omega_L}(-\omega_L + u_{\omega_L}) \\
+K_{\omega_R}(-\omega_R + u_{\omega_R}) 
+\end{matrix} \right]
+- \left[ \begin{matrix}
+2 ( v_z \omega_y - v_y \omega_z )\\
+2 ( v_x \omega_z - v_z \omega_x )\\
+2 ( v_y \omega_x - v_x \omega_y )\\
+\frac{1}{I_x} (I_z - I_y) \omega_y \omega_z \\
+\frac{1}{I_y} (I_x - I_z) \omega_x \omega_z \\
+\frac{1}{I_z} (I_y - I_x) \omega_x \omega_y \\
+0 \\
+0 \\
+0 \\
+0 \\
+0 \\
+0 \\
+0 \\
+0 
+\end{matrix} \right]
+\end{equation}
+where $f_1$ is given by:
+\begin{equation}\begin{split}
+    f_1 =& 
+    % diff in ail deflection
+    y_f C_{L_\delta}
+        \sum_{j \in [a,a_W]}
+         S_j  \left(
+         Q_{j,L} \delta_L  - Q_{j,R} \delta_R
+         \right) \text{ :: diff in ail deflection}\\
+        &-
+    % restmom roll
+        \frac{ \rho}{2}\int_{-b/2}^{b/2} y  c(y) \sqrt{v_x^2 + v_{z,l}^2} \left(C_L(\alpha_l) v_x + C_D(\alpha_l) v_{z,l} \right) dy \text{ :: restmom roll}\\
+    % roll due to yaw rate
+        &+ \int_{-b/2}^{b/2} y \left( \frac{\rho}{2}  \sqrt{v_{x,l}^2 + v_z^2} \left( C_L v_{x,l} + C_D v_{z} \right) \right) c(y) dy \text{ :: roll due to yaw rate}
+\end{split}\end{equation}
+, $f_2$ by:
+\begin{equation}\begin{split}
+    f_2 =& % Joint ail deflection
+        x_f C_{L_\delta} 
+        \left( 
+        \sum_{j \in [a,a_W]}  S_j \left( Q_{j,L} \delta_L + Q_{j,R} \delta_R \right)
+        \right) \text{ :: joint ail deflection} \\
+        &+ 
+        %pitch moment
+        \sum_{j \in [w, w_w]} C_{m,y,l} Q_j S_j l \text{ :: pitch moment} \\
+        %restmom pitch rate
+        &- \omega_y \rho \, 2 S_w C_{\omega_y} \sqrt{v_x^2 + v_z^2} \text{ :: restmom pitch rate}
+\end{split}\end{equation}
+and $f_3$ by:
+\begin{equation}\begin{split}
+    f_3 =& 
+    % diff in T
+    y_T \left( T_L - T_R \right) \text{ :: diff in T}\\
+    % mom due to sideslip
+    &- x_W \rho v S_W  \left( C_{L_\beta}(\beta) v_x + v_y C_{D_\beta}(\beta) \right) \text{ :: mom due to sideslip} \\
+    % restmom yaw rate
+    &+  \int_{-b/2}^{b/2} y \left( \frac{\rho}{2} \sqrt{v_{x,l}^2 + v_z^2} \left( -C_L v_z + C_D v_{x,l} \right) \right) c(y) dy \text{ :: restmom yaw rate}
+\end{split}\end{equation}
+
+$Q_{j,i}$ is given by $\frac{\rho}{2} v_k^2$ where $v_k$ is the speed in the relevant area, which can be either the aircraft velocity if the surface in question is outside the propeller wake, or the propeller wake air speed given by the left or right propeller speed if inside the propeller wake.
+
+Variables like $D_i$ and $D_{i,T}$ differ by both which area they use and which speed the airflow has since they are separated by if they are on the right or left side, inside or outside the propeller wake, and thus the currect expressions for the airspeed have to be used.
+The same argument goes for expressions which depend on $\alpha$.

@@ -1,0 +1,39 @@
+If we assume that $v_y$ is negligible then the Lift and Drag forces in body fram simplify into:
+\begin{equation}\begin{split}
+    L_i =& 
+     S \frac{1}{2} \rho v^2 \left( \frac{C_L v_x + C_D v_z}{\sqrt{v_x^2 + v_z^2}} \right) = 
+      S \frac{1}{2} \rho \sqrt{v_x^2 + v_z^2} \left(C_L v_x + C_D v_z \right)\\
+     %
+    D_i =& 
+     S \frac{1}{2} \rho v^2 \left( \frac{-C_L v_z + C_D v_x}{ \sqrt{v_x^2 + v_z^2}} \right)
+     = S \frac{1}{2} \rho \sqrt{v_x^2 + v_z^2} \left(-C_L v_z + C_D v_x\right)
+     \label{liftdragbody}
+\end{split}\end{equation}
+If the plane is experiencing rolling, a rotation about the $x$-axis with a rotational speed of $\omega_x$ then a restoring moment will be created.
+This is because the air is resisting the wings motion through the air.
+
+The rotational speed will yield an increased local $v_z$, $v_{z,l}$, along the wing:
+\begin{equation}
+    v_{z, l} = v_z + \omega_x y
+\end{equation}
+where $y$ is the distance away from the body along the wing.
+The change in velocity changes the angle of attack locally.
+The local angle of attack is denoted $\alpha_l$.
+
+Lets consider the full moment as the integral of the full moment across both wings.
+This way the symmetrical lift forces will cancel and only the rolling moment will remain.
+\begin{equation}\begin{split}
+    M_x =& -\int_{-b/2}^{b/2} y dL_i(y) dy \\
+    =& -\frac{\rho}{2}\int_{-b/2}^{b/2} y c(y) \sqrt{v_x^2 + v_{z,l}^2} \left(C_L v_x + C_D v_{z,l} \right) dy \\
+\end{split}\end{equation}
+If we make the crude assumption that $C_L = a * sin(2*\alpha)$, and the less crude asumption that $C_D = -b * cos(\alpha) + b$, it is still impossible to find the function $M_x(\omega_x)$ for the entire state space.
+A term:
+\begin{equation}
+    \int_{-b/2}^{b/2} y \sqrt{(v_1 + \omega y)^2 + v_2^2} dy
+\end{equation}
+will remain, and one has to assume $\alpha \in [-\pi/2, \pi/2]$, $v_2 \neq 0$ and/or many of the variables always positive, to find the function without the integral.
+
+A simulator can solve the integral numerically but in order to find smooth analytical expressions for the controller approximations have to be made.
+
+It turns out that the four dimensional function for restoring moment due to roll as a function of roll rate $\omega_x$, $v_x$ and $v_z$ is actually quite linear with respect to $\omega_x$.
+The remaining function can be closely approximated by a two dimensional polynomial in $v_x$ and $v_z$ allowing for a feedback linearized model to be implemented with very little error.
