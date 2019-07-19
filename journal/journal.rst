@@ -10,6 +10,31 @@ Thesis Journal
 Current status
 ^^^^^^^^^^^^^^
 
+All written below has been tried.
+The smulator now works good enough I think.
+I will start learn how to program the pixhawk.
+The torque translator turned out to be pretty straight forward once:
+- The wings are treated separately given the flow over each wing
+- The static pitch moment is not accounted for, but inputted as separate constant. This corresponds to the actual hardware trim we do in reality to achieve zero pitch moment at zero actuation in flight. In normal linear flying theory it actually is a constant, because things cancel in the equations, but in our non-linear case it actually isnt a constant. It does, however, seem to not vary too much. Little enough that once the baseline is set the controllers can handle the disturbances.
+
+I maybe should try to add wind distrubanes and wind gusts to the controller.
+But I think, to keep things realistic, I will scale away all waypoint things for the tests in reality and just have the altitude controller, P2 controller and torque converter.
+This means that I can make a small simulator for just that (given a constant or step quaternion) to compare with reality.
+It also limits the complexity of the tests, which is a good thing; things are already very complex.
+With this smaller simulator disturbances do not have to be modeled as wind or gusts, I can just add them directly to the rigid body equations in the simulator, maybe as steps, noise, etc.
+
+Now I need to start:
+- (Write down the equations for the current setup with tunable parameters where appropriate)
+- Learning how to, and program the pixhawk
+- Cad and 3d print the changes to the aircraft
+- Build the two aircraft
+- Do simulations that resemble the actual test I will perform
+- Do the experiments, tune and make things work
+- Compare to simulator, maybe adjust simulator to make it behave as reality (if changes are feasible)
+- Write report on it all.
+
+Then if I have time left over I may try to either implement my controller to take reference signals from the already existing waypoint system, or try to implement my own so that the local entrepeneur working with these can use them in the field.
+
 Simulator
 *********
 Nonlinear simulator working.
