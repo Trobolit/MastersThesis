@@ -9,7 +9,19 @@ Thesis Journal
 
 Current status
 ^^^^^^^^^^^^^^
+**Update**:
+The pixhawk can be programmer directly from simulink.
+It requires one to jump through some hoops, but works well.
+I have rebuilt the bixler aircraft, attached a gps, pixhawk, etc to it and built my own small live-tunable PID fly by wire system.
+Just to get experience on the setup on an aircraft which is ok to crash.
+I have permission to fly at the local university following few weeks so hope to get some hours down.
+I do need, however, to implement my own MAvLink protocol in simulink for it to work with QGroundControl.
+It is still faster than learning to make my own custom firmware for the pixhawk based on ardupilot.
 
+I also added wind to the simulator.
+The quaternion reference generator works acceptable in it, but could use some work.
+
+-----
 All written below has been tried.
 The smulator now works good enough I think.
 I will start learn how to program the pixhawk.
