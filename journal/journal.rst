@@ -9,7 +9,6 @@ Thesis Journal
 
 Current status
 ^^^^^^^^^^^^^^
-**Update**:
 The pixhawk can be programmer directly from simulink.
 It requires one to jump through some hoops, but works well.
 I have rebuilt the bixler aircraft, attached a gps, pixhawk, etc to it and built my own small live-tunable PID fly by wire system.
@@ -20,6 +19,37 @@ It is still faster than learning to make my own custom firmware for the pixhawk 
 
 I also added wind to the simulator.
 The quaternion reference generator works acceptable in it, but could use some work.
+
+**Update**:
+I rebuilt the Bixler with a Pixhawk onboard.
+I added a GPS to it and managed to start the built in MAVlink protocol handler.
+I had to recode some of the Simulink blocks to support all channels, correct data type, etc.
+But now it all works acceptable.
+The built in handler only provides location, heading and attitude. Nothing else.
+QGroundControl does, however, manage to extract these things and show them in real time.
+I had very little success manually sending data over the serial link.
+I built a small serial send/receive program onto the pixhawk and connected the ground station to my linux laptop.
+This verified that the Pixhawk does not like to send data for some reason, and receiving is terrible.
+If I spam the sender with raw bytes from my laptop I can make them show up in the Pixhawk, but only once I overfeed the link.
+So making my own MAVlink implementation from scratch would mean rebuilding the Serial HAL (hardware abstraction layer) in the firmware, probably.
+I did some tinkering with the firmware configuration and found the built in MAVLink handler.
+This worked, but I still haven't successfully added/read/written anything to it from simulink.
+
+I now know that the MAVlink antenna onboard the aircraft is responsible for the servo jitter.
+May need to build a shield or something.
+I've read online that some people managed to turn down the gain of the antenna in the firmware. Might want to try that. 
+
+**Furthermore**
+I build a small FBW (fly-by-wire) control scheme as a simple test, implemented it and flew.
+The first attempt resulted in the worst crash so far.
+Turns out I accidentally reversed the reference input signal for pitch...
+The controller adjusted correctly but when I wanted to pitch up the controller thought I meant pitch down...
+Rebuilding the aircraft, re-uploading the new code, and the airplane flies very well.
+This is then a proof of concept; I can make my own control schemes that rely on the underlying state estimators already in the firmware, in Simulink, build and upload directly from Simulink (even though it is extremely slow), and fly them.
+
+I think this is good enough for this thesis.
+Later I might improve it all, add missing features etc, but now it is time to build the dual engine aircraft, make it hover using my simple torque translator, Emil Fresks P2 controller and try a few small step inputs.
+Compare that with the simulator and we should be good to write a report.
 
 -----
 All written below has been tried.
