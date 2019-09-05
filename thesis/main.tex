@@ -235,11 +235,36 @@ The Pixhawk was then removed and placed on a small flying fixed wing with dual r
 The P2 controller \cite{P2} was implemented along with separate tuning for the three axis.
 The flying wing would hover well, but no logs could initially be produced.
 
-\subsection{My Torque translator}
+\subsection{Torque translator}
 The small flying wing has propeller wakes that covered the entire elevon.
 The EcoSoar does not.
 Therefor it is of interest to normalize the actuation signals given the current state so that they produce the requested torque from the P2 controller.
 By assuming that the airflow inside the wake and outside the wake do not affect each other and that the dynamic pressure is the dominating effect a simple function can be found that takes the current rotational speeds of the propellers, the current velocity of the aircraft and requested torque around $x$ and $y$ axis and gives the deflection angle of the control surfaces.
+
+We assume that damping due to rotational speeds do not exist, winglets have no $z$-offset, and no net pitch moment is created by the lift from the wings.
+The equations for torque around each axis then become:
+\begin{equation}
+\begin{split}
+    \tau_x =& y_f ( F_L + F_{L_T} - F_{R_T} -F_R) \\
+    \tau_y =& x_f ( F_{L_T} + F_L + F_{R_T} + F_R) \\
+    \tau_z =& y_T ( T_L - T_R)
+\end{split}
+\end{equation}
+which indicates that the elevons force per deflection is proportional to the airflow speed over them squared.
+The P2 controller outputs desired angular acceleration, $\dot{\omega_i}$, not torque.
+Necessary torque, $\tau_i$, for axis $i$ is given by
+\begin{equation}
+    \tau_i = \dot{\omega_i} I_i
+\end{equation}
+Solving for differential thrust is trivial.
+Taking the inertia around each axis into account the necessary deflection for each elevon, $u_{\delta_i}$ can be solved for given the current state:
+\begin{equation}
+\begin{split}
+    u_{\delta_L} =& \frac{-0.5 \tau_y}{k_1 sgn(v_x) v^2 + k_2 \omega_L^2} - \frac{0.5 \tau_x}{k_3 sgn(v_x) v^2 + k_4\omega_L^2} \\
+    u_{\delta_R} =& \frac{-0.5 \tau_y}{k_1 sgn(v_x) v^2 + k_2 \omega_R^2} + \frac{0.5 \tau_x}{k_3 sgn(vx) v^2 + k_4 \omega_R^2} 
+\end{split}
+\end{equation}
+where $k_{[1-4]}$ are numerical constants given by aircraft parameters.
 
 
 \section{Results}
@@ -275,10 +300,7 @@ Emil Fresk and George Nikolakopoulos
 July 17-19, 2013, Zürich, Switzerland.
 978-3-033-03962-9/©2013 EUCA
 
- 
-\bibitem{knuthwebsite} 
-Knuth: Computers and Typesetting,
-\\\texttt{http://www-cs-faculty.stanford.edu/\~{}uno/abcde.html}
+
 \end{thebibliography}
 
 
