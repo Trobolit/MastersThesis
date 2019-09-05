@@ -9,6 +9,24 @@ Thesis Journal
 
 Current status
 ^^^^^^^^^^^^^^
+
+5/9
+***
+Back in Malawi.
+I brought a small EPO foam flying fixed wing with dual rotors to do the initial experiments on, before I transition to the big EcoSoar.
+A crude variety of the real controller (no airflow correction since propellers cover entire elevons) was implemented and it hovers after some initial tuning.
+Now that I wanted to look at the logs and start to analyze data turns out Matlab has a bug preventing me from getting any data of the drone.
+Have filed a support ticket with them.
+
+Once I can get the data off of it I plan to do steps in all directions, then look at that data.
+Should it look acceptable I will try to fly it through a transition.
+This would be a proof of concept for Emils P2 controller on a tail sitter through a transition with no switching modes.
+
+Then I will build and test the full airflow compensating controller on an EcoSoar.
+
+
+Previous
+********
 The pixhawk can be programmer directly from simulink.
 It requires one to jump through some hoops, but works well.
 I have rebuilt the bixler aircraft, attached a gps, pixhawk, etc to it and built my own small live-tunable PID fly by wire system.
