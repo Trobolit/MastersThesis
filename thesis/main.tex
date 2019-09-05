@@ -98,13 +98,21 @@ A system with several states, i.e. $\bar{x}$ being a vector, and several inputs,
 Diff. Eqs, state feedback, observability, controllability.
 Are obs and contr. applicable on non linear systems?
 MIMO
-\subsection{State estimation/observers?}
+\subsection{State estimation/observers}
+A full state vector may not always be exactly measurable so estimating it is of importance.
+The Pixhawk already includes an extended kalman filter for estimating the position and attitude from an angular rate sensor, accellerometer, barometer and magnetometer.
 \subsection{Feedback Linearization}
+Didn't work.
 \subsubsection{Mimo: Lie derivatives and brackets}
 \subsubsection{Decoupling matrix}
 \subsection{L1 parameter compensation/estimation}
+Maybe still needed?
 \subsection{Reference Frames}
-NED, World+body frame
+When working with rigid bodies in 3d space a reference system is needed.
+In most of airplane dynamics for small scale aircraft the standard is a cartesian coordinate system with the x-axis aligned with North, y-axis aligned with East and the z-axis pointing down.
+The body frame is similair, x-axis pointing forwards, y-axis along right wing and z-axis thorugh the belly of the aircraft, i.e. down when flying normally.
+This correspond to the well used Roll-Pich-Yaw system.\cite{nelson}
+
 \subsection{Accellerated reference frames}
 \subsection{Quaternions}
 Euler angles are intuative but suffer from singularities.
@@ -206,19 +214,38 @@ You will need to adjust the $0.3$ offset accordingly as well since it is added d
 \subsection{Parameter estimation/declarations}
 
 \section{\textbf{Robust controller development and Implementation}}
+The controller implemented is based on a non-linear Proportional squared ($P^2$) controller by Emil Fresk\cite{P2}.
+The controller was first implemented on a simulator of the EcoSoar made in Simulink.
 \subsection{Simulink}
+The full non linear state space equations derived above in section \ref{sec:fulleqs} were put in a matlab function block surrounded by state integrators to generate the full state.
+Parameters were either measured or estimated to complete the numerical simulator.
+Controllers could then be tested and evaluated quickly.
+A instant render of the simulation was also added through Simulinks VR support blocks.
+
 \subsection{Pixhawk firmware}
-\subsection{Simulink - Pixhawk firmware with modifications}
-\subsection{Simulink Pixhawk firmware MAVLink}
+Mathworks has support for the embedded coder to directly upload apps into the PX4 NuttX Real Time OS that can run on the Pixhawk 1.
+The firmware has to be flashed to PX4 on the Pixhawk, files modified on the SD card and a wide range of supporting softwares must be installed on the host computer.
+
 \subsection{Initial testing on Bixler}
-\subsection{Gazeebo?}
-\subsection{X-plane 11}
-\subsection{Emils P2 controller}
+The evaluate the firmware/simulink controller deployment into a Pixhawk a Bixler was used.
+The Pixhawk was put into the Bixler to replace the receiver inside, necessary hardware added and then a simple FlyByWire controller was implemented and uploaded into the Pixhawk from Simulink.
+Results were very good, the Bixler flew as expected and no issues with the software on-board.
+\subsection{P2-controller}
+The Pixhawk was then removed and placed on a small flying fixed wing with dual rotors to test a simple version of the full controller.
+The P2 controller \cite{P2} was implemented along with separate tuning for the three axis.
+The flying wing would hover well, but no logs could initially be produced.
+
 \subsection{My Torque translator}
+The small flying wing has propeller wakes that covered the entire elevon.
+The EcoSoar does not.
+Therefor it is of interest to normalize the actuation signals given the current state so that they produce the requested torque from the P2 controller.
+By assuming that the airflow inside the wake and outside the wake do not affect each other and that the dynamic pressure is the dominating effect a simple function can be found that takes the current rotational speeds of the propellers, the current velocity of the aircraft and requested torque around $x$ and $y$ axis and gives the deflection angle of the control surfaces.
 
 
 \section{Results}
 \subsection{Performance in Simulations}
+Since all parameters are well known/set in the simulator and assumptions are the same for the simulator and controller the system works very well in simulation.
+
 \subsection{Performance in reality}
 
 \section{Conclusion}
@@ -228,12 +255,26 @@ You will need to adjust the $0.3$ offset accordingly as well since it is added d
 Michel Goossens, Frank Mittelbach, and Alexander Samarin. 
 \textit{The \LaTeX\ Companion}. 
 Addison-Wesley, Reading, Massachusetts, 1993.
- 
+
 \bibitem{einstein} 
 Albert Einstein. 
 \textit{Zur Elektrodynamik bewegter K{\"o}rper}. (German) 
 [\textit{On the electrodynamics of moving bodies}]. 
 Annalen der Physik, 322(10):891–921, 1905.
+
+\bibitem{nelson}
+Robert C Nelson
+\textit{Flight Stability and Automatic Control}
+[\textit{Second Edition}]
+ISBN: 0-07-066110-3
+
+\bibitem{P2}
+Emil Fresk and George Nikolakopoulos
+\textit{Full Quaternion Based Attitude Control for a Quadrotor}
+2013 European Control Conference (ECC)
+July 17-19, 2013, Zürich, Switzerland.
+978-3-033-03962-9/©2013 EUCA
+
  
 \bibitem{knuthwebsite} 
 Knuth: Computers and Typesetting,
