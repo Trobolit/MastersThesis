@@ -80,50 +80,77 @@ The staff also provided all the support needed to become integrated with the loc
 \section{Problem Forumulation}
 \input{problemformulation}
 
-\section{Needed math}
+\section{Theory}
 To develop this controller some basic concepts are required.
-\subsection{General State Space background}
+\subsection{State Space}
 Many systems can be written as a set of differential equation.
 
-Physical systems may sometimes be mathematically modeled by state space representation, given that it can be written on the same form as equation \ref{eq:generalstatespace} .
+Physical systems may sometimes be mathematically modeled by state space representation, given that it can be written on the same form as equation \ref{eq:generalstatespace} below.
 \begin{equation}
     \dot{\bar{x}} = f(\bar{x}) + g(\bar{u},\bar{x})
     \label{eq:generalstatespace}
 \end{equation}
 The states, $\bar{x}$ are related by a set of first order differential equations and some input.
 
-Systems can have one input and one state, called Single Input Single Output (SISO), or have either multiple input and outputs or both; Multiple Input Multiple Output (MIMO) systems.
+Systems can have one input and one state/output, called Single Input Single Output (SISO), or have either multiple input or outputs or both; Multiple Input Multiple Output (MIMO) systems.
 A system with several states, i.e. $\bar{x}$ being a vector, and several inputs, i.e. $\bar{u}$ being a vector is thus represented by a set of functions $\bar{f}$ and $\bar{g}$.
 
-Diff. Eqs, state feedback, observability, controllability.
-Are obs and contr. applicable on non linear systems?
-MIMO
+From basic fundamental physical laws, e.g. newtons laws, a set of differential equation for many physical systems can be derived.
+Once the state space equations are known simulating the system is only a matter of choosing a differential equation solver.
+Simulink has built in solver for these equations over time making it easy to simulate the system once the equations are known.
+
 \subsection{State estimation/observers}
 A full state vector may not always be exactly measurable so estimating it is of importance.
-The Pixhawk already includes an extended kalman filter for estimating the position and attitude from an angular rate sensor, accellerometer, barometer and magnetometer.
-\subsection{Feedback Linearization}
-Didn't work.
-\subsubsection{Mimo: Lie derivatives and brackets}
-\subsubsection{Decoupling matrix}
-\subsection{L1 parameter compensation/estimation}
-Maybe still needed?
+The Pixhawk PX4 firmware already includes an extended Kalman filter for estimating the position and attitude from an angular rate sensor, accelerometer, barometer and magnetometer.
+For this project the built in Kalman filter will be used to estimate the state with which the control system will act upon.
+
 \subsection{Reference Frames}
 When working with rigid bodies in 3d space a reference system is needed.
 In most of airplane dynamics for small scale aircraft the standard is a cartesian coordinate system with the x-axis aligned with North, y-axis aligned with East and the z-axis pointing down.
-The body frame is similair, x-axis pointing forwards, y-axis along right wing and z-axis thorugh the belly of the aircraft, i.e. down when flying normally.
-This correspond to the well used Roll-Pich-Yaw system.\cite{nelson}
+The body frame is similar, x-axis pointing forwards, y-axis along right wing and z-axis through the belly of the aircraft, i.e. down when flying normally.
+This correspond to the well used Roll-Pitch-Yaw system.\cite{nelson}
 
-\subsection{Accellerated reference frames}
 \subsection{Quaternions}
-Euler angles are intuative but suffer from singularities.
+Euler angles are intuitive but suffer from singularities.
 Since normal aircraft normally do not spend time pointing straight up these singularities do not matter too much, but a VTOL capable tail-sitter will, so using quaternions is beneficial.
 
+A quaternion, $\bold{q}$ is a four dimensional hyper complex number.\cite{P2}
+\begin{equation}
+ \mathbf{q} = q_0 + q_1 \mathbf{i} + q_2 \mathbf{j} + q_3 \mathbf{k}
+\end{equation}
+where $i^2 = j^2 = k^2 = ijk = -1$.\cite{Sola2016}
+The imaginary part can be referenced to as the vector part and $q_0$ the scalar part.
+The conjugate of a quaternion is defined as
+\begin{equation}
+     \mathbf{q^*} = q_0 - q_1 \mathbf{i} - q_2 \mathbf{j} - q_3 \mathbf{k}
+\end{equation}
+The quaternion can also be represented as a vector:
+\begin{equation}
+     \bold{q} = \left[
+     \begin{matrix}
+     q_0 &q_1 &q_2 &q_3
+     \end{matrix}\right]
+\end{equation}
+The norm of a quaternion is defined by
+\begin{equation}
+    ||\mathbf{q}|| = \sqrt{\mathbf{q} \otimes \mathbf{q}^*} = \sqrt{q_0^2 + q_1^2 + q_2^2 + q_3^2}
+\end{equation}
+If the norm of a quaternion is equal to $1$ it is a unit quaternion.
+Unit quaternions are very computationally efficient at describing rotations in 3D.
+They also do not suffer from any singularities like the common Roll-Pitch-Yaw / Euler angles system.
+Unit quaternions can always be written as
+\begin{equation}
+    \mathbf{q} = \left[\begin{matrix} cos \theta &\\ \mathbf{u} sin \theta\end{matrix}\right]
+\end{equation}
+where $\mathbf{u}$ is the vector $\left[\begin{matrix} q_1 & q_2 & q_3 \end{matrix}\right]$
+describing the axis of which to rotate around and $\theta$ is proportional to the amount of rotation about that axis.
+Multiplying unit quaternions yield a unit quaternion describing the joint rotation of the two initial quaternions.
+The conjugate of a quaternion gives the opposite rotation direction around the same vector.
+This can correspond to going from a world frame to body frame, or vice versa.
+Multiplying a reference quaternion describing a set orientation for an object in 3D with the conjugate of its actual quaternion therefore gives the error in orientation, attitude.
 
-Motivate through problems with Euler angles, RPY, etc
-Rotation matrix
-Cover basic quaternion math,
-world/bodyframe conversions
-\subsubsection{Madgwick filter}
+A more in depth description of quaternions and their mathematics please see \cite{Sola2016}.
+
 \subsection{Equations of Motion, in body frame}
 
 
@@ -150,7 +177,7 @@ world/bodyframe conversions
 
 \input{assumptions}
 
-\input{coordsys}
+%\input{coordsys}
 
 \input{aerodynamics}
 
@@ -185,26 +212,6 @@ world/bodyframe conversions
 
 \input{fulleqs}
 
-\section{Numerical approximations for Coefficients}
-Since the functions describing the coefficient of lift and drag are empirically obtained analytical expressions are helpful to obtain.
-Below are two approximations that closely follow the characteristics of the coefficients in the graphs above.
-The functions will have to be adapted for the EcoSoar.
-
-\begin{equation}
-C_D(\alpha) = 0.2663 \alpha^4 -1.676 \alpha^3 + 2.555 \alpha^2 + 0.2559 \alpha + 0.2% ; % 0.2 was 0 before camber guess
-\end{equation}
-where $\alpha$ is in radians in the interval $[0,\pi]$.
-
-\begin{equation}\begin{split}
-    C_D(\alpha) &= 2.939 10^{-6} \alpha^3 -0.0009205 \alpha^2 + 0.05943 \alpha -0.00613 \\
-    +&
-    0.85 e^{ -0.1 (\alpha - 10)^2 - 1 } + 0.4 e^{ -0.1 (\alpha - 5)^2 + -1 } - 0.15 e^{ -0.01 (\alpha - 20)^2 + -1 }
-    + 0.3
-\end{split}\end{equation}
-where $\alpha$ is in degrees in the interval $[0,90]$.
-To get the full range mirror and flip it across $\alpha = 90 \degree$.
-You will need to adjust the $0.3$ offset accordingly as well since it is added due to camber.
-
 
 \section{EcoSoar}
 \subsection{CAD model}
@@ -214,8 +221,19 @@ You will need to adjust the $0.3$ offset accordingly as well since it is added d
 \subsection{Parameter estimation/declarations}
 
 \section{\textbf{Robust controller development and Implementation}}
+
 The controller implemented is based on a non-linear Proportional squared ($P^2$) controller by Emil Fresk\cite{P2}.
 The controller was first implemented on a simulator of the EcoSoar made in Simulink.
+A few other controllers were first attempted, among them a Feedback Linearization controller.
+
+\subsection{Feedback Linearization}
+Didn't work.
+\subsubsection{Mimo: Lie derivatives and brackets}
+\subsubsection{Decoupling matrix}
+\subsection{L1 parameter compensation/estimation}
+Maybe still needed?
+
+
 \subsection{Simulink}
 The full non linear state space equations derived above in section \ref{sec:fulleqs} were put in a matlab function block surrounded by state integrators to generate the full state.
 Parameters were either measured or estimated to complete the numerical simulator.
@@ -300,6 +318,16 @@ Emil Fresk and George Nikolakopoulos
 July 17-19, 2013, Zürich, Switzerland.
 978-3-033-03962-9/©2013 EUCA
 
+\bibitem{aoa180}
+Robert E. Sheldahl, Paul C. Klimes
+\textit{Aerodynamic CHaracteristics of Seven Symmetrical Airfoil Sections Through 180-Degree Angle of Attack for Use in Aerodynamic Analysis of Vertical Axis Wind Turbines}
+Sandia National Laboratories - energy report
+SAND80-2114 Unlimited Release UC-60
+
+\bibitem{Sola2016}
+Joan Sol\`{a}
+\textit{Quaternion kinematics for the error-state KF}
+February 2, 2016
 
 \end{thebibliography}
 
