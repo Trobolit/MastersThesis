@@ -23,6 +23,10 @@ Should it look acceptable I will try to fly it through a transition.
 This would be a proof of concept for Emils P2 controller on a tail sitter through a transition with no switching modes.
 
 Then I will build and test the full airflow compensating controller on an EcoSoar.
+Hopefully things work great.
+If not it can be many things, but most likely the torque translator parameters will need heavy tuning.
+If i don't run out of time I could maybe try to implement a parameter estimator that find the correct parameters for me during flight.
+That might even cancel some errors on the fly due to simplifications I have made.
 
 
 Previous
