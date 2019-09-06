@@ -151,30 +151,15 @@ Multiplying a reference quaternion describing a set orientation for an object in
 
 A more in depth description of quaternions and their mathematics please see \cite{Sola2016}.
 
-\subsection{Equations of Motion, in body frame}
+%\subsection{Equations of Motion, in body frame}
 
 
 \subsection {Basic aerodynamics}
 \input{basicaero}
-\begin{itemize}
-        \item Bernoulli Equation, center of Pressure, etc
-        \item Basic plate theory
-        \item Aerodynamic center    
-        \item Aerodynamic forces and Moments
-        \begin{itemize}
-            \item Lift, and moment, due to camber
-            \item Lift due to angle of attack
-            \item Drag
-            \item Forces/Moments due to airflow over Ailerons and Elevators
-            \item Forces and Moments due to sideslip and roll
-            \item Forces/Moment due to roll rate, pitch rate and yaw rate
-        \end{itemize}
-        \item Propeller efficiency, airspeed, wake velocity
-    \end{itemize}
 
 \section{Mathematical Model of EcoSoar}
-
-
+To develop a control system first a simulator needs to be developed, and so the aircraft has to be mathematically modeled.
+To not make the simulator too time consuming to develop nor to complex a few assumptions will be made:
 \input{assumptions}
 
 %\input{coordsys}
@@ -248,15 +233,16 @@ The firmware has to be flashed to PX4 on the Pixhawk, files modified on the SD c
 The evaluate the firmware/simulink controller deployment into a Pixhawk a Bixler was used.
 The Pixhawk was put into the Bixler to replace the receiver inside, necessary hardware added and then a simple FlyByWire controller was implemented and uploaded into the Pixhawk from Simulink.
 Results were very good, the Bixler flew as expected and no issues with the software on-board.
-\subsection{P2-controller}
+\subsection{P2-controller - Flying foam wing}
 The Pixhawk was then removed and placed on a small flying fixed wing with dual rotors to test a simple version of the full controller.
 The P2 controller \cite{P2} was implemented along with separate tuning for the three axis.
-The flying wing would hover well, but no logs could initially be produced.
+The implemented controller can thus be thought of as a set of three P-D controllers, one for each axis.
+The flying wing would hover well, but no logs could initially be produced due to a bug in the embedded coder in Simulink.
 
 \subsection{Torque translator}
 The small flying wing has propeller wakes that covered the entire elevon.
 The EcoSoar does not.
-Therefor it is of interest to normalize the actuation signals given the current state so that they produce the requested torque from the P2 controller.
+Therefor it is of interest to normalize the actuation signals given the current state so that they produce the requested torque from the P2 controller in any given state.
 By assuming that the airflow inside the wake and outside the wake do not affect each other and that the dynamic pressure is the dominating effect a simple function can be found that takes the current rotational speeds of the propellers, the current velocity of the aircraft and requested torque around $x$ and $y$ axis and gives the deflection angle of the control surfaces.
 
 We assume that damping due to rotational speeds do not exist, winglets have no $z$-offset, and no net pitch moment is created by the lift from the wings.
@@ -289,7 +275,7 @@ where $k_{[1-4]}$ are numerical constants given by aircraft parameters.
 \subsection{Performance in Simulations}
 Since all parameters are well known/set in the simulator and assumptions are the same for the simulator and controller the system works very well in simulation.
 
-\subsection{Performance in reality}
+\subsection{Performance of the EcoSoar in reality}
 
 \section{Conclusion}
 
@@ -328,6 +314,13 @@ SAND80-2114 Unlimited Release UC-60
 Joan Sol\`{a}
 \textit{Quaternion kinematics for the error-state KF}
 February 2, 2016
+
+\bibitem{aerodynamics}
+John Anderson
+\textit{Fundamentals of Aerodynamics}
+Sixth Edition
+McGraw-Hill Education
+ISBN 978-1-259-12991-9
 
 \end{thebibliography}
 
