@@ -234,13 +234,21 @@ The evaluate the firmware/simulink controller deployment into a Pixhawk a Bixler
 The Pixhawk was put into the Bixler to replace the receiver inside, necessary hardware added and then a simple FlyByWire controller was implemented and uploaded into the Pixhawk from Simulink.
 Results were very good, the Bixler flew as expected and no issues with the software on-board.
 \subsection{P2-controller - Flying foam wing}
-The Pixhawk was then removed and placed on a small flying fixed wing with dual rotors to test a simple version of the full controller.
+The Pixhawk was then removed and placed on a small flying fixed wing with dual rotors, E-flite X-VERT VTOL BNF Basic EFL1850, to test a simple version of the full controller.
 The P2 controller \cite{P2} was implemented along with separate tuning for the three axis.
 The implemented controller can thus be thought of as a set of three P-D controllers, one for each axis.
-The flying wing would hover well, but no logs could initially be produced due to a bug in the embedded coder in Simulink.
+The E-flite would hover well, but no logs could initially be produced due to a bug in the embedded coder in Simulink.
+
+The brushless motors built into the E-flite are only designed for a 2 cell LiPo battery, but due to the added weight of the Pixhawk and ESCs their thrust was not sufficient.
+By doubling the voltage to a 4 cell Battery it would hover nicely.
+After a few crashes new propellers had to be 3D printed to replace those included which broke.
+The added load from the 3D printed propellers not being as efficient made the motors burn up.
+The motors from the EcoSoar were added since they are much more heavy duty.
+3D printed adapters were made to allow attaching the new motors to the E-flite.
+
 
 \subsection{Torque translator}
-The small flying wing has propeller wakes that covered the entire elevon.
+The E-flite has propeller wakes that cover the entire elevon.
 The EcoSoar does not.
 Therefor it is of interest to normalize the actuation signals given the current state so that they produce the requested torque from the P2 controller in any given state.
 By assuming that the airflow inside the wake and outside the wake do not affect each other and that the dynamic pressure is the dominating effect a simple function can be found that takes the current rotational speeds of the propellers, the current velocity of the aircraft and requested torque around $x$ and $y$ axis and gives the deflection angle of the control surfaces.
