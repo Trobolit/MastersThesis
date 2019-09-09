@@ -10,6 +10,21 @@ Thesis Journal
 Current status
 ^^^^^^^^^^^^^^
 
+9/9
+***
+Still have not heard back from Mathworks.
+Kind of need to get the log files working, else I am in real trouble here.
+
+I added an altitude holder to the EPO wing, that worked wonders.
+Had my first successful landing thanks to it.
+Then I burnt out both motors.
+Turns out the extra load on them due to my not as efficient 3D printed props pushed them over the limit.
+I already had them running at double the voltage intended with a super hefty ESC (50A+ I think) killed it in the end.
+Now I am transitioning to the much bigger motors intended for the final EcoSoar.
+Just need to 3D print a mount to get them attached properly.
+I also have much better props for these motors.
+
+
 5/9
 ***
 Back in Malawi.
