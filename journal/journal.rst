@@ -10,6 +10,12 @@ Thesis Journal
 Current status
 ^^^^^^^^^^^^^^
 
+10/9
+****
+Got to speak to a guy that actually developed the PX4 support for matlab, along with some supervisor.
+We got pretty much everything working again, except the actual logging when running in standalone mode.
+Probably going to have one more meeting for that.
+
 9/9
 ***
 Still have not heard back from Mathworks.
