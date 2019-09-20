@@ -52,10 +52,13 @@
 \end{titlepage}
 
 \abstract
-This is wehere we write about the abstract.
-asdasdasd
-asd
-asdasdjhsdkjhdsak dikd  sdoj asodj asdoja sdojas do
+A non linear quaternion based attitude controller of type P2 controller, together with a sensitivity normalizing function for the control surfaces has been simulated and implemented on a flying fixed wing with non vectored engines.
+In simulations the controller worked well in all flight modes, hovering, transition and flying, and also rejected a simple wind disturbance in all modes.
+The first implementation on hardware did not work due to programming errors causing crashed with unrepairable damages.
+The second aircraft was built out of a piece of ply wood to further simplify the testing.
+A non-existing airfoil, flat plate, has no effects due to camber and is so easier to both simulate and tune.
+The controller worked well/acceptable/bad/terrible in reality, maybe because of?
+
 
 \newpage
 \section*{\textit{Acknowledgements}}
@@ -198,12 +201,44 @@ To not make the simulator too time consuming to develop nor to complex a few ass
 \input{fulleqs}
 
 
-\section{EcoSoar}
-\subsection{CAD model}
-\subsection{modifications to dual engine}
+\section{EcoSoar replacement}
+Due to logistical issues in Malawi the full dual engine Eco-Soar could not be built.
+As a proof of concept a flying board was built to see if the controller would be feasible to implement on an EcoSoar in the future.
+\subsection{Parameter adjustments}
+Since a flying board has no camber all effects due to camber has been removed in the simulator.
+Also all physical measurements are replaced with those of the flying board.
+All other critical physical phenomena has been accounted for.
+The flying board has similar winglets.
+It has a similar c.g. vs center of pressure, two control surfaces partially covered by the propeller wakes and electronics in the middle to separate the two wings slightly. 
+Measurements are roughly similar, the flying board is slightly longer and has a much shorter wingspan, but the physics should be comparable.
+
+
 \subsection{Building}
-3D printing, building, etc
+A piece of plywood was bought at the local market area.
+Engine mounts were 3D-printed.
+Elevon areas were cut out of the board and poster board was cut to fit in the slots as elevons.
+Winglets were cut out in poster board to roughly same size as on the eco soar, and hot glued onto the top of the board to provide the physics of sideslip stability.
+A 5.5Ah 3S-LiPo was zip tied to the board in the very front.
+Two Electronic Speed controllers of type KDEXF-UAS35 were hoy glued on the sides of the battery in the very front as well.
+The ESCs were selected specifically to have a very fast response and lots of power to spare as to not become a limiting factor.
+The engines are the same as on the EcoSoar: 1300KV 420W three phase brushless motors.
+Two small 2kg/cm servos were mounted close to the elevons as actuators, linked with musical wire.
+A telemetry module and receiver were mounted far away from other electronics to minimize interference.
+The Pixhawk was glued behind the battery as close to the center of gravity as reasonable.
+Gluing provides a sturdier mount to the board for more accurate reading than using double sided tape.
+Due to the many crashes of the EPO wing which resulted in broken propellers two carbon rods were mounted perpendicular to the board, one in front on each side.
+When the board lands the propellers will not hit the ground as easily.
+The rods are held in place by tight fitting rubber bands on each side of the board so to provide some dampening effect should the landing be very hard.
+
+\begin{figure}
+    \center
+    \includegraphics[width=0.9\textwidth]{FlyingBoard.jpg}
+    \caption{A picture of the flying board, made out of plywood. The propellers are just placeholders for the photo.}
+\end{figure}
+
 \subsection{Parameter estimation/declarations}
+Wing areas can all be measured. Inertias have been estimated in a CAD program.
+
 
 \section{\textbf{Robust controller development and Implementation}}
 
@@ -228,6 +263,7 @@ A instant render of the simulation was also added through Simulinks VR support b
 \subsection{Pixhawk firmware}
 Mathworks has support for the embedded coder to directly upload apps into the PX4 NuttX Real Time OS that can run on the Pixhawk 1.
 The firmware has to be flashed to PX4 on the Pixhawk, files modified on the SD card and a wide range of supporting softwares must be installed on the host computer.
+Mathworks has great documentation on the subject.\cite{MathworksPX4}
 
 \subsection{Initial testing on Bixler}
 The evaluate the firmware/simulink controller deployment into a Pixhawk a Bixler was used.
@@ -268,7 +304,7 @@ Necessary torque, $\tau_i$, for axis $i$ is given by
 \begin{equation}
     \tau_i = \dot{\omega_i} I_i
 \end{equation}
-Solving for differential thrust is trivial.
+Solving for differential thrust is possible.
 Taking the inertia around each axis into account the necessary deflection for each elevon, $u_{\delta_i}$ can be solved for given the current state:
 \begin{equation}
 \begin{split}
@@ -339,6 +375,17 @@ John Anderson
 Sixth Edition
 McGraw-Hill Education
 ISBN 978-1-259-12991-9
+
+\bibitem{pixhawkthesis}
+Ryan G. Beall
+June 2017
+\textit{ENGINEERING OF FAST AND ROBUST ADAPTIVE
+CONTROL FOR FIXED-WING UNMANNED AIRCRAFT}
+NAVAL POSTGRADUATE SCHOOL MONTEREY, CALIFORNIA
+
+\bibitem{MathworksPX4}
+https://se.mathworks.com/hardware-support/px4-autopilots.html
+
 
 \end{thebibliography}
 
