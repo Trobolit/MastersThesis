@@ -9,6 +9,48 @@ Thesis Journal
 
 Current status
 ^^^^^^^^^^^^^^
+20/9
+****
+A meeting with several people of Mathworks along with many emails we have one confirmed bug in simulink which they sent me a quick fix for.
+A proper fix will be available in the next release, probably.
+We also have one missing feature, not technically a bug, but logs may be overwritten when the Pixhawk is overrun, undesired behavior.
+They will try to add that in the next release as well.
+
+With the code now working I started tuning the controller on the EPO wing, but found that I couldn't get it working well.
+Turns out I had a bunch of errors in my quaternion code, combined with sign errors on the actuators made it kind of able to hover,
+but anything more than 10 degrees off correct attitude would make it crash.
+I had 50+ crashes before I figured this out.
+The EPO wing cannot be repaired any more. I've run out of propellers and the broken ones cannot be repaired any more.
+
+VT has had big problems with logistics, and there is no way I can do what I originally set out to do in a reasonable time frame.
+I simply don't have the materials needed to even build one eco-soar.
+
+I decided to take a more reasonable approach:
+I have built a new airplane out of a piece of plywood.
+3D-printed engine mounts etc.
+Over sized elevons to make sure the thing is not under actuated, made of Poster Board.
+The center of gravity has been adjusted to lie in front of the quarter cord line, i.e. the center of pressure.
+This thing really ought to fly normally as an airplane no questions asked. 
+Which only leaves the problem of making it hover.
+
+Since a flat plate has no camber, there is no lift generated at zero angle of attack.
+The flat plate dynamics also come much much closer to what my simulator is capable of simulating.
+
+I modified the simulator for my new aircraft to match this new flying board.
+I could somewhat reproduce issues I've had with tuning the EPO wing, and so tried to tune this new board with the Zeiger-Nicholas method.
+In simulation it worked great.
+
+Due to a funeral I will go to Sweden 1st of October for a few days.
+I've ordered new propellers to family there that I will pick up.
+After I return with them I will try to tune the board in reality the same way I did in simulation;
+P-controller with increasing gain until oscillations.
+Find period time of oscillations, halve the P gain, set D gain to 3*Ts*Kp/40.
+Then if that hovers I will put my torque translator in between the controller and the actuators, normalized to not alter
+the behavior while hovering but to adjust sensitivity as the state changes.
+
+If the thing hovers, and maybe flies I will have the data to make a conclusion about my controller and can thus finish this thesis.
+My guess is that some form of L2 parameter estimation is needed for the translator to work well, but I've run out of time for this thesis.
+
 
 10/9
 ****
