@@ -9,6 +9,21 @@ Thesis Journal
 
 Current status
 ^^^^^^^^^^^^^^
+17/10
+*****
+Rapid progress has been made.
+Mathworks fixed the overrun issue, but at the cost of the internal clock being slowed down rendering logged data useless.
+The propellers I brought from Sweden are all broken, new ones are coming with my family coming today.
+Turns out that the yaw rate has to be limited a lot more than the other axis, but having that strong limit on the other axis makes them unstable, 
+so I've had to separate the P/D ratios for the two systems. Now it hovers very nicely.
+I attempted a transition, not fully but within 15 degrees, and it looks very promising!
+The sensitivity function is also online and operating now.
+All I have to do now is sort out the logging slowdown issue, either work with mathworks to streamline the code, or enable heavy RAM buffering, or last resort
+attach a secondary computer to the wing to handle only logging.
+Once that is done I will go to MUST, do a calibration flight, then to a series of steps in x and y axis in both hover and flying mode.
+Then I will disable my torque translator, do a hover with steps, try a transition and probably crash.
+If not, do steps while flying and then I'll have all the data I need to finish my report and thesis.
+
 20/9
 ****
 A meeting with several people of Mathworks along with many emails we have one confirmed bug in simulink which they sent me a quick fix for.
