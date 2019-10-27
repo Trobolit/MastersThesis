@@ -9,6 +9,23 @@ Thesis Journal
 
 Current status
 ^^^^^^^^^^^^^^
+
+27/10
+*****
+New propellers are here and work acceptable.
+Hovering nicely, even with reference adjustments.
+I fixed the time bogging issue by limiting logging frequency and number of log files.
+I wrote a script to later separate the signals out from the single log file.
+Turns out that the SD-log block from Mathworks actually pauses the internal real time clock (at least so it seems) when opening and closing files, which is a expensive task.
+
+I tried a transition at MUST, but the wind was way too strong and the transition failed.
+Return to hover almost worked but again the wind caused a crash.
+Will try again later when the wind is calm.
+Once data from this flight has been logged more accurate calibration points for the sensitivity translator can be obtained, which should result in a more similar response throughout the entire range.
+I also programed a switch for sequential, reproducible, steps in all directions in both modes for evaluation in the report.
+
+A flight now should be all I need to obtain the results I need for the thesis.
+
 17/10
 *****
 Rapid progress has been made.
