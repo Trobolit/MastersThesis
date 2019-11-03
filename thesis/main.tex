@@ -3,11 +3,13 @@
 \usepackage{amsmath, amssymb, amsfonts}
 \usepackage{tikz}
 \usepackage{pgfplots}
+    \pgfplotsset{compat=newest}
 \usepackage{cancel}
 \usepackage[margin=3cm]{geometry}
 %\usepackage{enumitem} % Allow tight lists
 \usepackage{gensymb} % for degree symbol
 \usepackage{tikzscale}
+  
 
 %\title{Robust control system development for VTOL-to-fixed wing flight %transition with the EcoSoar UAV}
 %\author{Robert Hedman}
@@ -339,7 +341,7 @@ Since velocity and the ratio torque/actuation is known the remaining parameters 
 
 For this very task an 80\% scale model of the flying plywood board was built, but with a single engine in the front instead of two.
 
-\section{Results}
+\section{Results}`
 \subsection{Performance in Simulations}
 Since all parameters are well known/set in the simulator and assumptions are the same for the simulator and controller the system works very well in simulation.
 
@@ -349,6 +351,12 @@ To achieve very smooth flight more tuning is necessary but the fact that it flie
 
 Below, in figure X, step responses in pitch and roll while both hovering and flying are displayed.
 The responses are similar but of different gain.
+
+%\begin{figure}
+%\center
+\input{pitch.tex}
+\input{roll.tex}
+%\end{figure}
 
 \section{Conclusion}
 
