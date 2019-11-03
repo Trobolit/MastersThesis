@@ -328,6 +328,16 @@ Taking the inertia around each axis into account the necessary deflection for ea
 \end{equation}
 where $k_{[1-4]}$ are numerical constants given by aircraft parameters.
 
+\subsubsection{Finding $k_2$ and $k_4$}
+Bypassing the torque translator and running the controller directly to the control surfaces a suitable step response can be tuned in while hovering.
+While hovering still in the air $v_x$ can be assumed to be negligible, and thus once the wanted response has been found one can solve for $k_2$ and $k_4$; the rotational speeds are known signals.
+
+\subsubsection{Finding $k_1$ and $k_3$: Single Engine Board}
+By flying normally with a standard Fly By Wire system and PD controller for pitch and roll a suitable response can be tuned in, granted that the board only has one single engine which propeller wash does not interfere with the control surfaces.
+This means that one can assume $k_2$ and $k_4$ to be zero.
+Since velocity and the ratio torque/actuation is known the remaining parameters can be found.
+
+For this very task an 80\% scale model of the flying plywood board was built, but with a single engine in the front instead of two.
 
 \section{Results}
 \subsection{Performance in Simulations}
