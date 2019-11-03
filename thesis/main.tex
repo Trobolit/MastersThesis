@@ -55,9 +55,11 @@
 A non linear quaternion based attitude controller of type P2 controller, together with a sensitivity normalizing function for the control surfaces has been simulated and implemented on a flying fixed wing with non vectored engines.
 In simulations the controller worked well in all flight modes, hovering, transition and flying, and also rejected a simple wind disturbance in all modes.
 The first implementation on hardware did not work due to programming errors causing crashed with unrepairable damages.
-The second aircraft was built out of a piece of ply wood to further simplify the testing.
+The second aircraft was built out of a piece of plywood to further simplify the testing and tolerate more crashes.
 A non-existing airfoil, flat plate, has no effects due to camber and is so easier to both simulate and tune.
-The controller worked well/acceptable/bad/terrible in reality, maybe because of?
+The controller worked acceptable in reality, but does need further tuning.
+Due to time constraints the weighing of airflow inside and outside the propeller wash could not be fully determined, but initial estimation of the parameters were enough to achieve robust, stable hovering transitioning and flying.
+The controller was never implemented on a EcoSoar due to time constraints, but the proof of concept flying piece of plywood proved the controller feasible for future embedding in a modified EcoSoar. 
 
 
 \newpage
@@ -236,6 +238,18 @@ The rods are held in place by tight fitting rubber bands on each side of the boa
     \caption{A picture of the flying board, made out of plywood. The propellers are just placeholders for the photo.}
 \end{figure}
 
+After several crashes a few extra modifications were made.
+The carbon rods were replaced with vertical pieces of plywood large enough to act as propeller guards but with a small enough area as to not make the aircraft statically unstable in yaw.
+After one of the battery was crushed in a particularly hard crash, turning the battery into ashes, a battery guard was made and mounted.
+The engine mounts were slightly reinforced and made straight as well.
+
+\begin{figure}
+    \center
+    \includegraphics[width=0.9\textwidth]{FlyingBoard.jpg}
+    \caption{TODO: A PICTURE OF THE MODIFIED PLYWOOD PLANE}
+\end{figure}
+
+
 \subsection{Parameter estimation/declarations}
 Wing areas can all be measured. Inertias have been estimated in a CAD program.
 
@@ -258,7 +272,7 @@ Maybe still needed?
 The full non linear state space equations derived above in section \ref{sec:fulleqs} were put in a matlab function block surrounded by state integrators to generate the full state.
 Parameters were either measured or estimated to complete the numerical simulator.
 Controllers could then be tested and evaluated quickly.
-A instant render of the simulation was also added through Simulinks VR support blocks.
+An instant 3D render of the simulation was also added through Simulinks VR support blocks.
 
 \subsection{Pixhawk firmware}
 Mathworks has support for the embedded coder to directly upload apps into the PX4 NuttX Real Time OS that can run on the Pixhawk 1.
@@ -319,7 +333,12 @@ where $k_{[1-4]}$ are numerical constants given by aircraft parameters.
 \subsection{Performance in Simulations}
 Since all parameters are well known/set in the simulator and assumptions are the same for the simulator and controller the system works very well in simulation.
 
-\subsection{Performance of the EcoSoar in reality}
+\subsection{Performance of the flying plywood board in reality}
+The board hovers and flies controllably.
+To achieve very smooth flight more tuning is necessary but the fact that it flies at all without the need of any switching controller indicates that the concept of normalizing the sensitivity of the control surfaces is very much valid.
+
+Below, in figure X, step responses in pitch and roll while both hovering and flying are displayed.
+The responses are similar but of different gain.
 
 \section{Conclusion}
 
