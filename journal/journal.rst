@@ -10,6 +10,20 @@ Thesis Journal
 Current status
 ^^^^^^^^^^^^^^
 
+3/11
+****
+I have been at MUST for the past week every sunrise at 4:30 and sunset at 18:00 waiting throughout the day for the wind to settle in the 40 degree heat.
+Due to the rapdidly approaching deadline I did not have the luxuary of missing a single minute of good flying conditions; of which there were three.
+First time I had a sucessful transition but pressed the emergency shutoff instead of the step response button...
+Second time I did not have enough altitude to complete the entire set of step responses, especially the pitch down response.
+Third time I got it.
+I now have step responses in pitch and roll while both hovering and flying with the same controller.
+To further improve the response I would need to further tune the mixing parameter.
+Right now it seems that while flying the sensetivity function weighs the wind too much, and so the total gain is too small.
+But that is good news, because flying without that function is impossible as the controller is way too strong and just inducers oscillations and crashes.
+The bad news is that I am out of time to test more, and will have to use the only repsonse I've managed to get in the report.
+At least I have something to write in the conclusion though.
+
 27/10
 *****
 New propellers are here and work acceptable.
