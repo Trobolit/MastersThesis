@@ -58,9 +58,9 @@ A non linear quaternion based attitude controller of type P2 controller, togethe
 In simulations the controller worked well in all flight modes, hovering, transition and flying, and also rejected a simple wind disturbance in all modes.
 The first implementation on hardware did not work due to programming errors causing crashed with unrepairable damages.
 The second aircraft was built out of a piece of plywood to further simplify the testing and tolerate more crashes.
-A non-existing airfoil, flat plate, has no effects due to camber and is so easier to both simulate and tune.
+A non-existing airfoil, flat plate, has no effects due to camber and is therefor easier to both simulate and tune.
 The controller worked acceptable in reality, but does need further tuning.
-Due to time constraints the weighing of airflow inside and outside the propeller wash could not be fully determined, but initial estimation of the parameters were enough to achieve robust, stable hovering transitioning and flying.
+Due to time constraints the weighing of airflow inside and outside the propeller wash could not be fully determined resulting in different gain in the different flight modes, but initial estimation of the parameters were enough to achieve robust, stable hovering transitioning and flying even in quite strong wind (more than 5 m/s).
 The controller was never implemented on a EcoSoar due to time constraints, but the proof of concept flying piece of plywood proved the controller feasible for future embedding in a modified EcoSoar. 
 
 
@@ -113,7 +113,7 @@ For this project the built in Kalman filter will be used to estimate the state w
 
 \subsection{Reference Frames}
 When working with rigid bodies in 3d space a reference system is needed.
-In most of airplane dynamics for small scale aircraft the standard is a cartesian coordinate system with the x-axis aligned with North, y-axis aligned with East and the z-axis pointing down.
+In most of airplane dynamics for small scale aircraft the standard is a Cartesian coordinate system with the x-axis aligned with North, y-axis aligned with East and the z-axis pointing down.
 The body frame is similar, x-axis pointing forwards, y-axis along right wing and z-axis through the belly of the aircraft, i.e. down when flying normally.
 This correspond to the well used Roll-Pitch-Yaw system.\cite{nelson}
 
@@ -206,22 +206,23 @@ To not make the simulator too time consuming to develop nor to complex a few ass
 
 
 \section{EcoSoar replacement}
-Due to logistical issues in Malawi the full dual engine Eco-Soar could not be built.
+Due to logistical issues in Malawi, time limitations and limitations in the Pixhawk library provided by Mathworks, the full dual engine Eco-Soar could not be built.
 As a proof of concept a flying board was built to see if the controller would be feasible to implement on an EcoSoar in the future.
 \subsection{Parameter adjustments}
 Since a flying board has no camber all effects due to camber has been removed in the simulator.
 Also all physical measurements are replaced with those of the flying board.
-All other critical physical phenomena has been accounted for.
-The flying board has similar winglets.
-It has a similar c.g. vs center of pressure, two control surfaces partially covered by the propeller wakes and electronics in the middle to separate the two wings slightly. 
+All other critical physical phenomena has been accounted for:
+The flying board has similar winglets, it has a similar c.g. vs center of pressure, two control surfaces partially covered by the propeller wakes and electronics in the middle to separate the two wings slightly. 
 Measurements are roughly similar, the flying board is slightly longer and has a much shorter wingspan, but the physics should be comparable.
+The simulator was adjusted to match the flying board.
 
 
 \subsection{Building}
 A piece of plywood was bought at the local market area.
 Engine mounts were 3D-printed.
 Elevon areas were cut out of the board and poster board was cut to fit in the slots as elevons.
-Winglets were cut out in poster board to roughly same size as on the eco soar, and hot glued onto the top of the board to provide the physics of sideslip stability.
+The hinges were made out of tape.
+Winglets were cut out in poster board to roughly same size as on the EcoSoar, and hot glued onto the top of the board to provide the physics of sideslip stability.
 A 5.5Ah 3S-LiPo was zip tied to the board in the very front.
 Two Electronic Speed controllers of type KDEXF-UAS35 were hot glued on the sides of the battery in the very front as well.
 The ESCs were selected specifically to have a very fast response and lots of power to spare as to not become a limiting factor.
@@ -244,6 +245,7 @@ After several crashes a few extra modifications were made.
 The carbon rods were replaced with vertical pieces of plywood large enough to act as propeller guards but with a small enough area as to not make the aircraft statically unstable in yaw.
 After one of the battery was crushed in a particularly hard crash, turning the battery into ashes, a battery guard was made and mounted.
 The engine mounts were slightly reinforced and made straight as well.
+The plywood areas under the winglets were broken off in crashes, glued back with carbon rod reinforcements.
 
 \begin{figure}
     \center
@@ -341,7 +343,11 @@ Since velocity and the ratio torque/actuation is known the remaining parameters 
 
 For this very task an 80\% scale model of the flying plywood board was built, but with a single engine in the front instead of two.
 
-\section{Results}`
+\section{Results}
+
+The plywood board can hover and transition into flight.
+Further tuning would be preferable.
+
 \subsection{Performance in Simulations}
 Since all parameters are well known/set in the simulator and assumptions are the same for the simulator and controller the system works very well in simulation.
 
