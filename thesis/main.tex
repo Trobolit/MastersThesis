@@ -287,7 +287,9 @@ Mathworks has great documentation on the subject.\cite{MathworksPX4}
 The evaluate the firmware/simulink controller deployment into a Pixhawk a Bixler was used.
 The Pixhawk was put into the Bixler to replace the receiver inside, necessary hardware added and then a simple FlyByWire controller was implemented and uploaded into the Pixhawk from Simulink.
 Results were very good, the Bixler flew as expected and no issues with the software on-board.
-\subsection{P2-controller - Flying foam wing}
+
+
+\subsection{P2-controller - Flying foam wing TODO: Remove and or explain why this step exists. FLying board directly perhaps?}
 The Pixhawk was then removed and placed on a small flying fixed wing with dual rotors, E-flite X-VERT VTOL BNF Basic EFL1850, to test a simple version of the full controller.
 The P2 controller \cite{P2} was implemented along with separate tuning for the three axis.
 The implemented controller can thus be thought of as a set of three P-D controllers, one for each axis.
@@ -343,6 +345,9 @@ Since velocity and the ratio torque/actuation is known the remaining parameters 
 
 For this very task an 80\% scale model of the flying plywood board was built, but with a single engine in the front instead of two.
 
+\subsection{Full controller diagram}
+TODO: Picture of simulink sketch that all tests were run on.
+
 \section{Results}
 
 The plywood board can hover and transition into flight.
@@ -350,6 +355,10 @@ Further tuning would be preferable.
 
 \subsection{Performance in Simulations}
 Since all parameters are well known/set in the simulator and assumptions are the same for the simulator and controller the system works very well in simulation.
+
+
+TODO: Maybe add graphs of simulations?
+The simulations worked so well with almost any settings maybe they aren't of interest?
 
 \subsection{Performance of the flying plywood board in reality}
 The board hovers and flies controllably.
