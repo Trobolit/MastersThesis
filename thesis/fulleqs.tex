@@ -79,10 +79,10 @@ where $f_1$ is given by:
         \sum_{j \in [a,a_W]}
          S_j  \left(
          Q_{j,L} \delta_L  - Q_{j,R} \delta_R
-         \right) \text{ :: diff in ail deflection}\\
+         \right) \text{ :: difference in elevon deflection}\\
         &-
     % restmom roll
-        \frac{ \rho}{2}\int_{-b/2}^{b/2} y  c(y) \sqrt{v_x^2 + v_{z,l}^2} \left(C_L(\alpha_l) v_x + C_D(\alpha_l) v_{z,l} \right) dy \text{ :: restmom roll}\\
+        \frac{ \rho}{2}\int_{-b/2}^{b/2} y  c(y) \sqrt{v_x^2 + v_{z,l}^2} \left(C_L(\alpha_l) v_x + C_D(\alpha_l) v_{z,l} \right) dy \text{ :: restorint moment due to roll}\\
     % roll due to yaw rate
         &+ \int_{-b/2}^{b/2} y \left( \frac{\rho}{2}  \sqrt{v_{x,l}^2 + v_z^2} \left( C_L v_{x,l} + C_D v_{z} \right) \right) c(y) dy \text{ :: roll due to yaw rate}
 \end{split}\end{equation}
@@ -92,12 +92,12 @@ where $f_1$ is given by:
         x_f C_{L_\delta} 
         \left( 
         \sum_{j \in [a,a_W]}  S_j \left( Q_{j,L} \delta_L + Q_{j,R} \delta_R \right)
-        \right) \text{ :: joint ail deflection} \\
+        \right) \text{ :: joint elevon deflection} \\
         &+ 
         %pitch moment
         \sum_{j \in [w, w_w]} C_{m,y,l} Q_j S_j l \text{ :: pitch moment} \\
         %restmom pitch rate
-        &- \omega_y \rho \, 2 S_w C_{\omega_y} \sqrt{v_x^2 + v_z^2} \text{ :: restmom pitch rate}
+        &- \omega_y \rho \, 2 S_w C_{\omega_y} \sqrt{v_x^2 + v_z^2} \text{ :: restoring moment due to pitch rate}
 \end{split}\end{equation}
 and $f_3$ by:
 \begin{equation}\begin{split}
@@ -105,9 +105,9 @@ and $f_3$ by:
     % diff in T
     y_T \left( T_L - T_R \right) \text{ :: diff in T}\\
     % mom due to sideslip
-    &- x_W \rho v S_W  \left( C_{L_\beta}(\beta) v_x + v_y C_{D_\beta}(\beta) \right) \text{ :: mom due to sideslip} \\
+    &- x_W \rho v S_W  \left( C_{L_\beta}(\beta) v_x + v_y C_{D_\beta}(\beta) \right) \text{ :: moment due to sideslip} \\
     % restmom yaw rate
-    &+  \int_{-b/2}^{b/2} y \left( \frac{\rho}{2} \sqrt{v_{x,l}^2 + v_z^2} \left( -C_L v_z + C_D v_{x,l} \right) \right) c(y) dy \text{ :: restmom yaw rate}
+    &+  \int_{-b/2}^{b/2} y \left( \frac{\rho}{2} \sqrt{v_{x,l}^2 + v_z^2} \left( -C_L v_z + C_D v_{x,l} \right) \right) c(y) dy \text{ :: restoring moment due to yaw rate}
 \end{split}\end{equation}
 
 $Q_{j,i}$ is given by $\frac{\rho}{2} v_k^2$ where $v_k$ is the speed in the relevant area, which can be either the aircraft velocity if the surface in question is outside the propeller wake, or the propeller wake air speed given by the left or right propeller speed if inside the propeller wake.

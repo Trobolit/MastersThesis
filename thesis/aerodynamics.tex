@@ -146,7 +146,7 @@ With our assumptions the above equation can be written as:
 
 \subsubsection{Pitching moment}
 Lift due to camber on a wing acts at ~50\% of the cord line.
-Lift due to angle of attack acts at roughly 25\% of the cord line.
+Lift due to angle of attack acts at roughly 25\% of the cord line.\cite{aerodynamics}
 This makes the force acting point, center of pressure, move along the cord line when angle of attack and aircraft velocity changes.
 A common simplification is to choose the aerodynamic center, a.c., as the point at which Lift acts.
 It can be shown that placing the a.c. at the 25\% cord position 
@@ -162,6 +162,7 @@ where $l$ is the characteristic length of the wing, usually taken as the mean co
 \subsection{Equations of motion}
 
 The equations of motion can be split into three parts: one part due to gravity, one part due to the rigid body frame being an accelerated reference frame, and one part due to aerodynamic forces.
+These forces depend on the aircrafts attitude and will be expressed in terms of it.
 
 \subsubsection{Attitude}
 The attitude is represented by a quaternion:
@@ -172,6 +173,7 @@ Any vector, $\bar{r}_w$, in world frame can be represented in the body frame by 
 \begin{equation}
     \bar{r}_b = \bar{q} \bar{r}_w \bar{q^*}
 \end{equation}
+
 \subsubsection{Gravity}
 In the case of gravity, $\left[\begin{smallmatrix}0\\0\\mg\end{smallmatrix}\right]_w$, the force, $m \bar{g}$, becomes
 \begin{equation}

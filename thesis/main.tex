@@ -56,7 +56,7 @@
 \abstract
 A non linear quaternion based attitude controller of type P2 controller, together with a sensitivity normalizing function for the control surfaces has been simulated and implemented on a flying fixed wing with non vectored engines.
 In simulations the controller worked well in all flight modes, hovering, transition and flying, and also rejected a simple wind disturbance in all modes.
-The first implementation on hardware did not work due to programming errors causing crashed with unrepairable damages.
+The first implementation on hardware did not work due to programming errors causing crashes with unrepairable damages.
 The second aircraft was built out of a piece of plywood to further simplify the testing and tolerate more crashes.
 A non-existing airfoil, flat plate, has no effects due to camber and is therefor easier to both simulate and tune.
 The controller worked acceptable in reality, but does need further tuning.
@@ -187,6 +187,7 @@ To not make the simulator too time consuming to develop nor to complex a few ass
 \input{thrust}
 
 \subsection{Restoring moment due to roll rate}
+\label{sec:restmomroll}
 \input{restmomroll}
 
 \subsection{Restoring moment due to yaw rate}
@@ -241,21 +242,25 @@ The rods are held in place by tight fitting rubber bands on each side of the boa
     \caption{A picture of the flying board, made out of plywood. The propellers are just placeholders for the photo.}
 \end{figure}
 
-After several crashes a few extra modifications were made.
+After several crashes a few extra modifications were made which can be seen in Figure \ref{fig:finalboard}.
 The carbon rods were replaced with vertical pieces of plywood large enough to act as propeller guards but with a small enough area as to not make the aircraft statically unstable in yaw.
-After one of the battery was crushed in a particularly hard crash, turning the battery into ashes, a battery guard was made and mounted.
+The actual area of the front and rear vertical surfaces are equal, but the moment arm to the c.g. is much greater for the rear surfaces making the aircraft still be statically stable in yaw.
+After one of the batteries was crushed in a particularly hard crash, turning the battery into ashes, a battery guard was made and mounted.
 The engine mounts were slightly reinforced and made straight as well.
 The plywood areas under the winglets were broken off in crashes, glued back with carbon rod reinforcements.
 
 \begin{figure}
     \center
-    \includegraphics[width=0.9\textwidth]{FlyingBoard.jpg}
-    \caption{TODO: A PICTURE OF THE MODIFIED PLYWOOD PLANE}
+    \includegraphics[width=0.9\textwidth]{plywoodfinal.jpg}
+    \caption{A picture of the final version of the flying board. The propeller guards have been replaced with plywood, a battery guard has been added, the rear winglet holding areas are reinforced with carbon fibre rods and the gps module is added on the right side.}
+    \label{fig:finalboard}
 \end{figure}
 
 
 \subsection{Parameter estimation/declarations}
-Wing areas can all be measured. Inertias have been estimated in a CAD program.
+Most parameters listed can be directly measured on the flying board, such as wing area, weight, center of gravity, etc.
+Inertias have been estimated in a CAD program, and other parameters were estimated from measurements on similar aircraft.
+The simulator is, any way, just a feasibility check and not a proper tuning ground for the controller, finding bugs and rough settings is enough.
 
 
 \section{\textbf{Robust controller development and Implementation}}
@@ -265,11 +270,15 @@ The controller was first implemented on a simulator of the EcoSoar made in Simul
 A few other controllers were first attempted, among them a Feedback Linearization controller.
 
 \subsection{Feedback Linearization}
-Didn't work.
-\subsubsection{Mimo: Lie derivatives and brackets}
-\subsubsection{Decoupling matrix}
-\subsection{L1 parameter compensation/estimation}
-Maybe still needed?
+Due to the complex nonlinear state space equations solving the system for feedback simulations was infeasible.
+Matlab would compute for days without result and without time estimate.
+Filling in certain parameters with numerical values made a semi-symbolic solution possible, which behaved nicely in simulations.
+However, the decoupling matrix had a condition number in the order of $10^5$ making the system very susceptible to any noise or uncertanties.
+The equations for calculating the necessary actuation also contained very large numbers (order of $10^80$) divided by other large numbers meaning that any discrepancies would crash the airplane.
+
+Solving the inverse numerically on the fly was also considered but had similar issues as well as being computationally heavy for a small computer as the Pixhawk 1.
+
+After spending too much time trying to work around these issues the plan was abandoned.
 
 
 \subsection{Simulink}
@@ -390,6 +399,8 @@ The responses are similar but of different gain.
 
 
 \section{Conclusion}
+
+Maybe add link to matlab/simulink code as reference?
 
 \newpage
 
