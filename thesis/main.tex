@@ -368,6 +368,10 @@ TODO: Picture of simulink sketch that all tests were run on.
 
 \section{Results}
 
+\begin{itemize}
+    \item Talk about the logging issues, hard faults and time slowdown here or in conclusion.
+\end{itemize}
+
 The plywood board can hover and transition into flight.
 Further tuning would be preferable but not possible for the scope of this thesis due to time and weather constraints.
 
@@ -409,16 +413,74 @@ The responses are similar but of different gain.
 
 \section{Conclusion}
 
-Maybe add link to matlab/simulink code as reference?
+Some of the results presented are adjusted for mechanical trim.
+This system, contrary to the multirotor discussed in \cite{P2}, does need an integrator since it is not embedded in the system by nature.
+A perfectly mechanically trimmed version of the flying board would not need the integrator but the current setup does not allow for fine tuning.
+A slow integrator would also be able to adjust for varying gain due to unforeseen nonlinear effects.
+
+The step responses in flying vs hovering mode have different gain which is most likely due to the $k_i$ parameters in the torque translator not being perfectly tuned.
+As stated the single engine board only served to find rough estimates to allow for controlled flight, which it did, but not perfect parameter estimations.
+The gain when flying was too low, indicating that the expected sensitivity of the elevon was higher, i.e. $k_1$ and $k_3$ are too big.
+Physically this means that the external airflow has a smaller effect than anticipated which probably is due to the propellers wake covering a much bigger proportion of the elevon than expected.
+Either a few more test flights in calm wind to tune those parameters in, or some form of online L1 parameter estimation/correction would probably solve this issue.
+When moving this control system to the very similar EcoSoar an online parameter estimation algorithm would probably be preferable to avoid the difficult tuning process which comes with the risk of crashing; rebuilding an EcoSoar is not only difficult and time consuming but more expensive than buying some more plywood at the local market.
+
+In the step responses while flying some small oscillations can be seen.
+This seems to correspond to oscillation frequency that can be seen in the elevon servos when the system has mechanical play.
+The linkage from servo to elevon have play that results in maybe a 5 degree uncertainty and it is possible for the servos to end up in resonance around this play.
+When flying the dynamic pressure is higher on the elevons and maybe that increased pressure is enough to initiate the oscillations during transitioning.
+Either a higher precision linkage or a higher quality servo might remove these oscillations.
+
+The vast number of logged/recorded crashed throughout this thesis (in excess of 40) would have been alleviated with a vicon/motion capture system.
+Many of the initial crashes were simple quaternion bugs that would have been found by just moving and rotating the aircraft in am external known coordinate system.
+This prolonged the development time significantly and the scarce resources, along with limited information about the surrounding supply chains, made progress even more slow and uncertain.
+
+Another issue that made development very difficult is the very limited hardware and processing power of the Pixhawk 1.
+Although this system in its now working state can be run on the Pixhawk 1, development should have been done on something more powerful to allow for all the debugging, logging and testing unoptimized algorithms.
+The current algorithm would also probably be more suited to be implemented in c++ code directly in the firmware.
+The actual algorithm would not take many rows of code nor much resources.
+What causes the slowdowns is probably the unoptimized simulink generated c++ code that now needs to handle everything from receiving RC input to generating PWM signals.
+In the firmware these tasks have been more optimized and coded for the specific hardware in a more dedicated way.
+
+Throughout this project two Simulink bugs have been found, reported and fixes were received from Mathworks.
+The first one caused several, hard to debug, mid flight reboots resulting in the aircraft falling out of the sky.
+This was extra difficult to understand because Mathworks has implemented the SD logging feature such that upon reboot it overwrites all log files up until the reboot, leaving the developer with no data to look at other than a hex dump with the stack pointer location from the firmware.
+Mathworks support was great at helping fix this issue by providing custom SD logging code.
+
+The second issue was that the SD logging block in Simulink would buffer log data in ram and not write directly to the SD card even if that option was set.
+This means a maximum of every other data point could be logged, or data would be lost in case of anything but a clean soft shutdown of the system.
+Mathworks supplied custom code to fix this as well; the Mathworks support from the developers has been excellent.
+
+Next big issue with the Simulink - Pixhawk interaction was a silent slowdown.
+Even when the Simulink app was set to, and reported, a specific refresh rate it would not agree with reality.
+Many weeks were spent tuning and calibrating the flying board for just hovering without much success. 
+The board would barely hover, and sometimes without wind hover acceptably but any disturbances would easily ground it involuntarily. 
+After too much time a step response signal was implemented and the steps made to be one second long.
+The first time it was tested the steps were 6 seconds long in reality, but the log files indicated correct sampling frequency and duration for the steps.
+Turns out that getting a dual rotor tail sitter to hover is very difficult at an effective 20Hz sampling frequency.
+Disabling all logging and timing the step responses externally with a stopwatch verified that the issue was still with the logging.
+The Mathworks supplied hard fault fix meant that the log files would be opened, written to and closed on every iteration of the control system.
+Opening and closing files is a very expensive task so the system was redesigned to log everything in one big file to be separated externally after the flight.
+That reduced the time dilation significantly but not enough.
+A reduced logging frequency got the time error within 1\% and had to suffice.
+This meant that the controller would run at the intended 120 Hz but only every third datapoint would be logged.
+Once this was fixed the flying board hovered nicely corrected itself much more smoothly.
+
+All these time delays meant that very little time was left to the final testing and evaluation, but the data acquired and presented here do seem to indicate that what was set out to test is possible:
+A non switching controller can handle the entire flight envelope of a VTOL capable flying fixed wing when the control surface forces are normalized.
+To further improve this some wind tunnel tests and maybe airflow sensors on the control surfaces would help further understand how to tune this system, maybe even remove the tuning steps completely.
+
 
 \begin{itemize}
-\item Mechanical trim needs integrator
-\item Steps are not fully same gain, probably due to k-parameters not fully tuned. Another flight or two to really measure the relationship would most likely suffice.
-\item Hard to test without known ground truth, e.g. vicon system.
-\item Hard to debug timing issues prolonged testing
-\item Bugs in logging prolonged testing, got special code from mathworks.
+%\item Mechanical trim needs integrator
+%\item Steps are not fully same gain, probably due to k-parameters not fully tuned. Another flight or two to really measure the relationship would most likely suffice.
+%\item Hard to test without known ground truth, e.g. vicon system.
+%\item Hard to debug timing issues prolonged testing
+%\item Bugs in logging prolonged testing, got special code from mathworks.
 \item SOMEHWERE explain exactly how to go from the [1,1,0.7] without torque translator to finding K parameters both ways. Maybe show substitute stuff?
-\item Wobbling/small oscillations in step responses when flying most likely due to hinge play in elevons. They got worse after a few crashes and are also under higher pressure. They may also correspond to the self oscillations in the servos we've seen when they are pushed a little bit too hard on PWM frequency.
+\item SOMEWHERE present the intended operating frequencies / sampling time
+%\item Wobbling/small oscillations in step responses when flying most likely due to hinge play in elevons. They got worse after a few crashes and are also under higher pressure. They may also correspond to the self oscillations in the servos we've seen when they are pushed a little bit too hard on PWM frequency.
+\item Maybe add link to matlab/simulink code as reference?
 \end{itemize}
 
 \newpage
