@@ -10,6 +10,11 @@ Thesis Journal
 Current status
 ^^^^^^^^^^^^^^
 
+6/11
+****
+Report is slowly taking its shape.
+Cleared to present on the 20th, tickets booked!
+
 3/11
 ****
 I have been at MUST for the past week every sunrise at 4:30 and sunset at 18:00 waiting throughout the day for the wind to settle in the 40 degree heat.
