@@ -423,45 +423,46 @@ A 3 Volt per cell cutoff results in the resting voltage stabilizing around 3.5 w
 
 \section{Results}
 
-\begin{itemize}
-    \item Talk about the logging issues, hard faults and time slowdown here or in conclusion.
-\end{itemize}
-
 The plywood board can hover and transition into flight.
 Further tuning would be preferable but not possible for the scope of this thesis due to time and weather constraints.
 
 \subsection{Performance in Simulations}
-Since all parameters are well known/set in the simulator and assumptions are the same for the simulator and controller the system works very well in simulation.
+Since all parameters are well known/set in the simulator and assumptions are the same for the simulator and controller the system works very well in simulation for a very wide range of parameters and settings.
+Therefore it does not yield any valuable tuning reference frame, only general info like testing handedness of quaternions and whether the controller is at all feasible.
 
 
-TODO: Maybe add graphs of simulations?
-The simulations worked so well with almost any settings maybe they aren't of interest?
+%TODO: Maybe add graphs of simulations?
+%The simulations worked so well with almost any settings maybe they aren't of interest?
 
 \subsection{Performance of the flying plywood board in reality}
 The board hovers and flies controllably.
 To achieve very smooth flight more tuning is necessary but the fact that it flies at all without the need of any switching controller indicates that the concept of normalizing the sensitivity of the control surfaces is very much valid.
 
-Below, in figure X, step responses in pitch and roll while both hovering and flying are displayed.
+In Figure \ref{fig:pitchstep} and \ref{fig:rollstep} step responses in pitch and roll while both hovering and flying are displayed.
 The responses are similar but of different gain.
+A small oscillation can be seen in the response while flying.
+
+In Figure \ref{fig:transition} a complete transition from hovering to flying can be seen.
+The reference pitch had to be manually adjusted during the transition to maintain level flight; no altitude holder was enabled.
 
 
 \begin{figure}[]
     \centering
     \input{pitchsteps.tex}
     \caption{Step responses in pitch for the flying Plywood board while both hovering and flying. The data has been adjusted to compensate for mechanical trim offset.}
-    \label{airplane}
+    \label{fig:pitchstep}
 \end{figure}
 
 \begin{figure}[]
     \input{rollsteps.tex}
     \caption{Step responses in roll for the flying Plywood board while both hovering and flying. The control surfaces were not mechanically perfectly trimmed so the data above has been offset to compensate.}
-    \label{airplane}
+    \label{fig:rollstep}
 \end{figure}
 
 \begin{figure}[]
     \input{transfer.tex}
     \caption{Step response in pitch when transitioning from hovering to flying. The end reference value had to be adjusted to keep the altitude above ground.}
-    \label{airplane}
+    \label{fig:transition}
 \end{figure}
 
 
@@ -470,6 +471,7 @@ The responses are similar but of different gain.
 
 Some of the results presented are adjusted for mechanical trim.
 This system, contrary to the multirotor discussed in \cite{P2}, does need an integrator since it is not embedded in the system by nature.
+Any small movement in c.g. or airflow changes the static pitch moment and thus an offset in control is needed.
 A perfectly mechanically trimmed version of the flying board would not need the integrator but the current setup does not allow for fine tuning.
 A slow integrator would also be able to adjust for varying gain due to unforeseen nonlinear effects.
 
@@ -526,17 +528,9 @@ A non switching controller can handle the entire flight envelope of a VTOL capab
 To further improve this some wind tunnel tests and maybe airflow sensors on the control surfaces would help further understand how to tune this system, maybe even remove the tuning steps completely.
 
 
-\begin{itemize}
-%\item Mechanical trim needs integrator
-%\item Steps are not fully same gain, probably due to k-parameters not fully tuned. Another flight or two to really measure the relationship would most likely suffice.
-%\item Hard to test without known ground truth, e.g. vicon system.
-%\item Hard to debug timing issues prolonged testing
-%\item Bugs in logging prolonged testing, got special code from mathworks.
-\item SOMEHWERE explain exactly how to go from the [1,1,0.7] without torque translator to finding K parameters both ways. Maybe show substitute stuff?
-\item SOMEWHERE present the intended operating frequencies / sampling time
-%\item Wobbling/small oscillations in step responses when flying most likely due to hinge play in elevons. They got worse after a few crashes and are also under higher pressure. They may also correspond to the self oscillations in the servos we've seen when they are pushed a little bit too hard on PWM frequency.
-\item Maybe add link to matlab/simulink code as reference?
-\end{itemize}
+%\begin{itemize}
+%\item SOMEHWERE explain exactly how to go from the [1,1,0.7] without torque translator to finding K parameters both ways. Maybe show substitute stuff?
+%\end{itemize}
 
 \newpage
 
