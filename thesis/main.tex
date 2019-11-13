@@ -48,7 +48,7 @@
         Department of Computer Science, Electrical and Space Engineering\\
         Luleå University of Technology\\
         %\textit{Supervisors:} K. \textsc{Atta}, K. \textsc{Kochersberger}\\
-        \textit{Supervisors:} K. \textsc{Kochersberger}\\
+        %\textit{Supervisors:} K. \textsc{Kochersberger}\\
         \textit{Examinator:} G. \textsc{Nikolakopoulos}
 
  
@@ -69,10 +69,14 @@ The controller was never implemented on a EcoSoar due to time constraints, but t
 \newpage
 \section*{\textit{Acknowledgements}}
 
-TODO: Thank teachers that helped, Mr. K, Avory, Wife, Brianna, etc.
+I would like to extend a special thanks to Dr. Kochersberger at Virginia Tech who supplied me with the materials to finish this thesis.
+Fellow students, Avery and Brianna, also helped me a lot in understanding the building of an EcoSoar and general aerodynamics.
+My friend and teacher at LTU, K. Atta, also deserves a very big thanks for the many hours over a really bad phone connection he helped me try different control, and modeling, approaches.
 
 I also want to extend a very warm thank you to Montford Special Needs College in Malawi for allowing me to stay there together with my wife during this thesis.
-The staff also provided all the support needed to become integrated with the local culture and helping out with practical issues such as getting a car, finding the hospital and providing a safe circle of friends.
+The staff provided all the support needed to become integrated with the local culture and helping out with practical issues such as getting a car, finding the hospital and providing a safe circle of friends.
+
+Without XP-EL this thesis would not have been possible, they donated a 3D-printer that now resides with locals improving Malawi bit by bit.
 
 \newpage
 
@@ -289,7 +293,7 @@ Parameters were either measured or estimated to complete the numerical simulator
 Controllers could then be tested and evaluated quickly.
 An instant 3D render of the simulation was also added through Simulinks VR support blocks.
 
-TODO: INSERT PICTURE OF SIMULATOR
+%TODO: INSERT PICTURE OF SIMULATOR
 
 \subsection{Pixhawk firmware}
 Mathworks has support for the embedded coder to directly upload apps into the PX4 NuttX Real Time OS that can run on the Pixhawk 1.
@@ -468,7 +472,7 @@ The reference pitch had to be manually adjusted during the transition to maintai
 
 
 
-\section{Conclusion}
+\section{Discussion and Future work}
 
 Some of the results presented are adjusted for mechanical trim.
 This system, contrary to the multirotor discussed in \cite{P2}, does need an integrator since it is not embedded in the system by nature.
@@ -528,6 +532,21 @@ All these time delays meant that very little time was left to the final testing 
 A non switching controller can handle the entire flight envelope of a VTOL capable flying fixed wing when the control surface forces are normalized.
 To further improve this some wind tunnel tests and maybe airflow sensors on the control surfaces would help further understand how to tune this system, maybe even remove the tuning steps completely.
 
+\subsection{Ethics}
+The work presented in this thesis aims to help a developing country ease a problematic infrastructure.
+No money or resources has been brought out of the country.
+
+Testing drones around MUST requires quite a lot of planning; crashing a drone into a family home could potentially injure people and destroy property.
+All testing has therefor been carefully planned and carried out in areas void of people and their property.
+Testing expensive equipment in air also tends to bring a large crowd of children that come running as testing starts.
+Bringing a translator is a very good idea as they can explain the safe, and non safe, areas for the children to be in.
+In this thesis that has always been the case.
+
+
+\subsection{Conclusion}
+The attitude controller works, but before deployment it would need more tuning and logged data to be trusted.
+The initial problem set out to solve in this thesis can be deemed shown feasible but not fully attained.
+Developing drones is probably better left to be done in labs better equipped, whereas proper testing and evaluation of end of development phase systems can be done in Malawi.
 
 %\begin{itemize}
 %\item SOMEHWERE explain exactly how to go from the [1,1,0.7] without torque translator to finding K parameters both ways. Maybe show substitute stuff?
