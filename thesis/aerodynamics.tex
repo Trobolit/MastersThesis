@@ -1,7 +1,8 @@
 
 \subsection{Aircraft force diagram}
 The aircraft in question is the EcoSoar; a flying wing.
-It has two control surfaces, one on each wing called elevons.
+It has two control surfaces, one on each wing, called elevons.
+The elevons can adjust the camber of each wing and so increase or decrease the lift of the wing as needed.
 In front of each wing a motor and propeller is mounted providing thrust.
 The motors also supply an airflow over the control surfaces when the aircraft is not moving through the air.
 
@@ -25,31 +26,30 @@ The lift forces, $L_L$ and $L_R$, are functions of airflow over wing outside of 
 
 
 
-\subsubsection{Aerodynamic Lift force}
+\subsubsection{Aerodynamic lift force}
 
 The lift force of a wing depends on several factors.
 Mainly: geometrical shape, dynamic pressure and angle of attack.\cite{aerodynamics}
 The bigger the wing the more lift.
 The faster air flows the more lift.
 The further away from hitting the wing straight on, usually more lift.
-
 Important note: Lift is defined as the \textbf{Aerodynamic force component perpendicular to the incoming airflow.} This means that, for example, the lift force labeled in figure \ref {airplane} as \textbf{$L_L$ is not the aerodynamic lift but rather the lift force in body frame.} The same argument applies to the drag forces.
 
 Aerodynamic lift is usually modeled as\cite{nelson}\cite{aerodynamics}:
 \begin{equation}
-    L = Q  C_L S
+    L = Q  C_L S,
 \end{equation}
 where $S$ is a reference surface area of the wing and $Q$ is the dynamic pressure:
 \begin{equation}
-    Q = \frac{1}{2} \rho v^2
+    Q = \frac{1}{2} \rho v^2,
 \end{equation}
 $\rho$ is the density of air and $v$ the velocity of the air hitting the wing.
 $C_L$ is the coefficient of lift, a function of the angle of attack.
 This coefficient is not linear. Empirical studies\cite{aoa180}\cite{aoa180-2} have found functions similair to the one in figure \ref{clalpha}.
 \begin{figure}[h]
     \center
-    \includegraphics[scale=0.15]{aoa_80s.png}
-    \caption{Coefficient of lift for a symmetrical wing vs angle of attack for the entire 180 degree rotation of the wing. The function is periodic.}
+    \includegraphics[scale=0.25]{aoa_80s.png}
+    \caption{Coefficient of lift for a symmetrical wing as a function of angle of attack for the entire 180 degree rotation of the wing. The function is periodic. \cite{aoa180}}
     \label{clalpha}
 \end{figure}
 
@@ -59,11 +59,11 @@ If air is aligned with the $x$-axis $\alpha$ is zero, and if aligned with the $z
 Thus, if we assume no wind the angle of attack is only dependent on the aircraft velocity $\bar{v}$.
 Normally this is modeled as:
 \begin{equation}
-    \alpha = tan^{-1}(\frac{v_z}{v_x})
+    \alpha = tan^{-1}(\frac{v_z}{v_x}),
     \label{eq:aoa}
 \end{equation}
-but in our case the velocity may have any direction in the $x$-$z$ plane, and is not limited to the right half plane.
-The polar coordinates for vector $\bar{v}$ in the figure below, figure \ref{polar}, are:
+but in our case the velocity may have any direction in the $x$-$z$ plane (body reference system), and is not limited to the right half plane (i.e. $v_x$ is not strictly positive).
+The polar coordinates for vector $\bar{v}$ in figure \ref{polar}, are:
 \begin{equation}\begin{split}
     v_x =& \, r \, cos(\alpha) \\
     v_y =& \, r \, sin(\alpha) \\
@@ -83,21 +83,21 @@ where $\alpha$ is in the interval $[-\pi,\pi]$.
 Similarly to aerodynamic lift the wing will also have an aerodynamic drag force, but parallel to the incoming flow and not perpendicular as lift.
 The drag is also modeled like so:
 \begin{equation}
-    D = Q C_D S
+    D = Q C_D S,
 \end{equation}
 where the coefficient of drag, $C_D$, can also be experimentally obtained as in figure \ref{drag}.
 
 \begin{figure}[h]
     \center
-    \includegraphics[scale=0.15]{drag180.png}
-    \caption{Coefficient of drag for a symmetrical wing vs angle of attack for the entire 180 degree rotation of the wing.}
+    \includegraphics[scale=0.2]{drag180.png}
+    \caption{Coefficient of drag for a symmetrical wing vs angle of attack for the entire 180 degree rotation of the wing. \cite{aoa180}}
     \label{drag}
 \end{figure}
 
 
 \subsubsection{Lift and drag in body frame}
 
-Since the aerodynamic lift and drag forces are relative the incoming airflow, i.e. functions of the angle of attack, $\alpha$, the body frame Lift and Drag have to transformed:
+Since the aerodynamic lift and drag forces are relative to the incoming airflow, i.e. functions of the angle of attack, $\alpha$, the body frame Lift and Drag have to transformed:
 \begin{equation}\begin{split}
     L_i &= cos(\alpha) L + sin(\alpha) D \\
     D_i &= -sin(\alpha) L + cos(\alpha) D
@@ -116,7 +116,7 @@ If we substitute in expressions for aerodynamic lift and drag we obtain:
     D_i =& -\frac{v_z}{\sqrt{v_x^2 + v_z^2}} Q C_L S +
             \frac{v_x}{\sqrt{v_x^2 + v_z^2}} Q C_D S \\          
 \end{split}\end{equation}
-which simplify into:
+which simplifies into:
 \begin{equation}\begin{split}
     L_i =& 
      S \frac{1}{2} \rho v^2 \left( \frac{C_L v_x + C_D v_z}{\sqrt{v_x^2 + v_z^2}} \right) \\
@@ -125,7 +125,7 @@ which simplify into:
      S \frac{1}{2} \rho v^2 \left( \frac{-C_L v_z + C_D v_x}{\sqrt{v_x^2 + v_z^2}} \right)
      \label{liftdragbody}
 \end{split}\end{equation}
-where $v = \sqrt{v_x^2 + v_y^2 + v_z^2}$.
+where $v$ is the velocity norm: $v = \sqrt{v_x^2 + v_y^2 + v_z^2}$.
 
 
 \subsection{Moment due to force}
@@ -145,11 +145,18 @@ With our assumptions the above equation can be written as:
 \end{equation}
 
 \subsubsection{Pitching moment}
-Lift due to camber on a wing acts at ~50\% of the cord line.
-Lift due to angle of attack acts at roughly 25\% of the cord line.\cite{aerodynamics}
-This makes the force acting point, center of pressure, move along the cord line when angle of attack and aircraft velocity changes.
-A common simplification is to choose the aerodynamic center, a.c., as the point at which Lift acts.
-It can be shown that placing the a.c. at the 25\% cord position 
+Lift due to camber on a wing acts at $\sim$50\% of the chord line.
+The chord line is the straight line connecting the leading edge to the trailing edge of an airfoil, as shown in figure \ref{fig:chord}.
+\begin{figure}[h]
+    \center
+    \includegraphics[width=0.8\linewidth]{chord.png}
+    \caption{An illustration of an airfoil with the leading edge, trailing edge, chord length, chord line, camber line and thickness marked.}
+    \label{fig:chord}
+\end{figure}
+Lift due to angle of attack acts at roughly 25\% of the chord line.\cite{aerodynamics}
+This makes the force acting point, center of pressure, move along the chord line when angle of attack and aircraft velocity changes.
+A common simplification is to choose the aerodynamic center, a.c., as the point at which Lift acts.\cite{aerodynamics}
+It can be shown that placing the a.c.~at the 25\% chord position 
 makes the moment generated vary little as angle of attack changes, yielding simpler equations.
 The pitching moment due to lift can now be expressed as:
 \begin{equation}
@@ -157,11 +164,11 @@ The pitching moment due to lift can now be expressed as:
     C_{m,y,l} Q S_j l +  \cancelto{0}{\sum_{j \in [w, w_w]}
     C_{m,y,l,\alpha} Q S_j l \alpha}
 \end{equation}
-where $l$ is the characteristic length of the wing, usually taken as the mean cord for pitching moments and the wingspan for rolling and yawing moments.
+where $l$ is the characteristic length of the wing, usually taken as the mean chord for pitching moments and the wingspan for rolling and yawing moments.
 
 \subsection{Equations of motion}
 
-The equations of motion can be split into three parts: one part due to gravity, one part due to the rigid body frame being an accelerated reference frame, and one part due to aerodynamic forces.
+The equations of motion can be split into three parts: gravity, rigid body frame being an accelerated reference frame, and aerodynamic forces.
 These forces depend on the aircrafts attitude and will be expressed in terms of it.
 
 \subsubsection{Attitude}
@@ -175,13 +182,13 @@ Any vector, $\bar{r}_w$, in world frame can be represented in the body frame by 
 \end{equation}
 
 \subsubsection{Gravity}
-In the case of gravity, $\left[\begin{smallmatrix}0\\0\\mg\end{smallmatrix}\right]_w$, the force, $m \bar{g}$, becomes
+In the case of gravity in the world frame, $\left[\begin{smallmatrix}0\\0\\mg\end{smallmatrix}\right]_w$, the body frame force becomes
 \begin{equation}
 m \dot{\bar{v}}_b = \left[ \begin{matrix}
     2 (\bar{q_1} \bar{q_3} + \bar{q_0} \bar{q_2})  \\
     2 (\bar{q_2} \bar{q_3} - \bar{q_0} \bar{q_1})  \\
     (\bar{q_0}^2 - \bar{q_1}^2 - \bar{q_2}^2 + \bar{q_3}^2) 
-    \end{matrix} \right] m g
+    \end{matrix} \right] m g .
 \end{equation}
 Gravity acts in the center of gravity and creates no moment.
-Since gravity is in world frame and we want to express it in body frame we need to conjugate the quaternion.
+Since gravity is in world frame and we want to express it in body frame the quaternion is conjugated.

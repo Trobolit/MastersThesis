@@ -27,7 +27,7 @@
  
         \vspace{0.5cm}
         \LARGE
-        A thesis in Automatic Control
+        A masters thesis in Automatic Control
  
         \vspace{1.5cm}
  
@@ -40,7 +40,7 @@
         \vfill
  
         A thesis presented for the degree of\\
-        Masters of Science / Civil Engineer
+        Masters of Science / Engineering Physics and Electrical Engineering
  
         \vspace{0.6cm}
  
@@ -56,15 +56,15 @@
 \end{titlepage}
 
 \abstract
-A non linear quaternion based attitude controller of type P2 controller, together with a sensitivity normalizing function for the control surfaces has been simulated and implemented on a flying fixed wing with non vectored engines.
+A non switching, non linear, quaternion based attitude controller of type P2 controller, together with a sensitivity normalizing function for the control surfaces has been simulated and implemented on a flying fixed wing with non vectored engines.
 In simulations the controller worked well in all flight modes, hovering, transition and flying, and also rejected a simple wind disturbance in all modes.
 The first implementation on hardware did not work due to programming errors causing crashes with unrepairable damages.
 The second aircraft was built out of a piece of plywood to further simplify the testing and tolerate more crashes.
 A non-existing airfoil, flat plate, has no effects due to camber and is therefor easier to both simulate and tune.
 The controller worked acceptable in reality, but does need further tuning.
-Due to time constraints the weighing of airflow inside and outside the propeller wash could not be fully determined resulting in different gain in the different flight modes, but initial estimation of the parameters were enough to achieve robust, stable hovering transitioning and flying even in quite strong wind (more than 5 m/s).
+Due to time constraints the weighing of airflow inside and outside the propeller wash could not be fully determined resulting in different gain in the different flight modes, but initial estimation of the parameters were enough to achieve robust, stable hovering transitioning and flying even in quite strong wind. %(more than 5 m/s).
 The controller was never implemented on a EcoSoar due to time constraints, but the proof of concept flying piece of plywood proved the controller feasible for future embedding in a modified EcoSoar. 
-
+A VTOL capable EcoSoar could be used for critical deliveries in for example the medical field in Malawi where suboptimal infrastructure is hindering progress.
 
 \newpage
 \section*{\textit{Acknowledgements}}
@@ -96,20 +96,19 @@ Without XP-EL this thesis would not have been possible, they donated a 3D-printe
 To develop this controller some basic concepts are required.
 \subsection{State Space}
 Many systems can be written as a set of differential equation.
-
-Physical systems may sometimes be mathematically modeled by state space representation, given that it can be written on the same form as equation \ref{eq:generalstatespace} below.
+Physical systems may sometimes be mathematically modeled by state space representation, given that it can be written on the same form as equation \ref{eq:generalstatespace}.
 \begin{equation}
     \dot{\bar{x}} = f(\bar{x}) + g(\bar{u},\bar{x})
     \label{eq:generalstatespace}
 \end{equation}
-The states, $\bar{x}$ are related by a set of first order differential equations and some input.
+The states, $\bar{x}$ are related by a set of first order differential equations and some input, $\bar{u}$.
 
 Systems can have one input and one state/output, called Single Input Single Output (SISO), or have either multiple input or outputs or both; Multiple Input Multiple Output (MIMO) systems.
 A system with several states, i.e. $\bar{x}$ being a vector, and several inputs, i.e. $\bar{u}$ being a vector is thus represented by a set of functions $\bar{f}$ and $\bar{g}$.
 
 From basic fundamental physical laws, e.g. newtons laws, a set of differential equation for many physical systems can be derived.
 Once the state space equations are known simulating the system is only a matter of choosing a differential equation solver.
-Simulink has built in solver for these equations over time making it easy to simulate the system once the equations are known.
+Simulink has built in solvers for these equations over time making it easy to simulate the system once the equations are known.
 
 \subsection{State estimation/observers}
 A full state vector may not always be exactly measurable so estimating it is of importance.
@@ -117,7 +116,7 @@ The Pixhawk PX4 firmware already includes an extended Kalman filter for estimati
 For this project the built in Kalman filter will be used to estimate the state with which the control system will act upon.
 
 \subsection{Reference Frames}
-When working with rigid bodies in 3d space a reference system is needed.
+When working with rigid bodies in 3D space a reference system is needed.
 In most of airplane dynamics for small scale aircraft the standard is a Cartesian coordinate system with the x-axis aligned with North, y-axis aligned with East and the z-axis pointing down.
 The body frame is similar, x-axis pointing forwards, y-axis along right wing and z-axis through the belly of the aircraft, i.e. down when flying normally.
 This correspond to the well used Roll-Pitch-Yaw system.\cite{nelson}
@@ -126,27 +125,28 @@ This correspond to the well used Roll-Pitch-Yaw system.\cite{nelson}
 Euler angles are intuitive but suffer from singularities.
 Since normal aircraft normally do not spend time pointing straight up these singularities do not matter too much, but a VTOL capable tail-sitter will, so using quaternions is beneficial.
 
-A quaternion, $\bold{q}$ is a four dimensional hyper complex number.\cite{P2}
+A quaternion, $\bold{q}$ is a four dimensional hyper complex number \cite{P2},
 \begin{equation}
- \mathbf{q} = q_0 + q_1 \mathbf{i} + q_2 \mathbf{j} + q_3 \mathbf{k}
+ \mathbf{q} = q_0 + q_1 \mathbf{i} + q_2 \mathbf{j} + q_3 \mathbf{k},
 \end{equation}
 where $i^2 = j^2 = k^2 = ijk = -1$.\cite{Sola2016}
 The imaginary part can be referenced to as the vector part and $q_0$ the scalar part.
 The conjugate of a quaternion is defined as
 \begin{equation}
-     \mathbf{q^*} = q_0 - q_1 \mathbf{i} - q_2 \mathbf{j} - q_3 \mathbf{k}
+     \mathbf{q^*} = q_0 - q_1 \mathbf{i} - q_2 \mathbf{j} - q_3 \mathbf{k}.
 \end{equation}
 The quaternion can also be represented as a vector:
 \begin{equation}
      \bold{q} = \left[
      \begin{matrix}
      q_0 &q_1 &q_2 &q_3
-     \end{matrix}\right]
+     \end{matrix}\right].
 \end{equation}
 The norm of a quaternion is defined by
 \begin{equation}
-    ||\mathbf{q}|| = \sqrt{\mathbf{q} \otimes \mathbf{q}^*} = \sqrt{q_0^2 + q_1^2 + q_2^2 + q_3^2}
+    ||\mathbf{q}|| = \sqrt{\mathbf{q} \otimes \mathbf{q}^*} = \sqrt{q_0^2 + q_1^2 + q_2^2 + q_3^2}.
 \end{equation}
+
 If the norm of a quaternion is equal to $1$ it is a unit quaternion.
 Unit quaternions are very computationally efficient at describing rotations in 3D.
 They also do not suffer from any singularities like the common Roll-Pitch-Yaw / Euler angles system.
@@ -170,8 +170,8 @@ A more in depth description of quaternions and their mathematics please see \cit
 \input{basicaero}
 
 \section{Mathematical Model of EcoSoar}
-To develop a control system first a simulator needs to be developed, and so the aircraft has to be mathematically modeled.
-To not make the simulator too time consuming to develop nor to complex a few assumptions will be made:
+To develop a control system a simulator needs to be developed, thus the aircraft has to be mathematically modeled.
+In order for the simulator to not be too time consuming to develop nor too complex a few assumptions are made:
 \input{assumptions}
 
 %\input{coordsys}
@@ -182,7 +182,7 @@ To not make the simulator too time consuming to develop nor to complex a few ass
 \input{accrefframe}
 
 
-\subsubsection{elevons}
+\subsubsection{Elevons}
 \input{elevons}
 
 \subsection{Winglets, forces and moments due to sideslip}
@@ -211,9 +211,10 @@ To not make the simulator too time consuming to develop nor to complex a few ass
 \input{fulleqs}
 
 
-\section{EcoSoar replacement}
+\section{EcoSoar Replacement}
 Due to logistical issues in Malawi, time limitations and limitations in the Pixhawk library provided by Mathworks, the full dual engine Eco-Soar could not be built.
 As a proof of concept a flying board was built to see if the controller would be feasible to implement on an EcoSoar in the future.
+The camber was removed from the design to allow for a wing that was easier to repair and more crash resistant.
 \subsection{Parameter adjustments}
 Since a flying board has no camber all effects due to camber has been removed in the simulator.
 Also all physical measurements are replaced with those of the flying board.
@@ -237,7 +238,7 @@ Two small 2kg/cm servos were mounted close to the elevons as actuators, linked w
 A telemetry module and receiver were mounted far away from other electronics to minimize interference.
 The Pixhawk was glued behind the battery as close to the center of gravity as reasonable.
 Gluing provides a sturdier mount to the board for more accurate reading than using double sided tape.
-Due to the many crashes of the EPO wing which resulted in broken propellers two carbon rods were mounted perpendicular to the board, one in front on each side.
+Due to the many crashes of the flying wing which resulted in broken propellers, two carbon rods were mounted perpendicular to the board, one in front on each side.
 When the board lands the propellers will not hit the ground as easily.
 The rods are held in place by tight fitting rubber bands on each side of the board so to provide some dampening effect should the landing be very hard.
 
@@ -250,7 +251,8 @@ The rods are held in place by tight fitting rubber bands on each side of the boa
 After several crashes a few extra modifications were made which can be seen in Figure \ref{fig:finalboard}.
 The carbon rods were replaced with vertical pieces of plywood large enough to act as propeller guards but with a small enough area as to not make the aircraft statically unstable in yaw.
 The actual area of the front and rear vertical surfaces are equal, but the moment arm to the c.g. is much greater for the rear surfaces making the aircraft still be statically stable in yaw.
-After one of the batteries was crushed in a particularly hard crash, turning the battery into ashes, a battery guard was made and mounted.
+This has to be ensured for the physics to be comparable to those of the EcoSoar.
+A battery guard was also installed after a particularly hard crash ignited one of the batteries.
 The engine mounts were slightly reinforced and made straight as well.
 The plywood areas under the winglets were broken off in crashes, glued back with carbon rod reinforcements.
 
@@ -262,36 +264,36 @@ The plywood areas under the winglets were broken off in crashes, glued back with
 \end{figure}
 
 
-\subsection{Parameter estimation/declarations}
+\subsection{Parameter estimation and declarations}
 Most parameters listed can be directly measured on the flying board, such as wing area, weight, center of gravity, etc.
 Inertias have been estimated in a CAD program, and other parameters were estimated from measurements/data sheet on similar aircraft.
-The simulator is, anyway, just a feasibility check and not a proper tuning ground for the controller, finding bugs and rough settings is good enough.
+%The simulator is, anyway, just a feasibility check and not a proper tuning ground for the controller, finding bugs and rough settings is good enough.
 
 
 \section{\textbf{Robust controller development and Implementation}}
 
-The controller implemented is based on a non-linear Proportional squared ($P^2$) controller by Emil Fresk\cite{P2}.
-The controller was first implemented on a simulator of the EcoSoar made in Simulink.
+The implemented controller is based on a non-linear Proportional squared ($P^2$) controller presented by Emil Fresk\cite{P2}.
+The controller was first implemented on a simulator of the EcoSoar made in Simulink and later adapted for the flying board.
 A few other controllers were first attempted, among them a Feedback Linearization controller.
 
 \subsection{Feedback Linearization}
-Due to the complex nonlinear state space equations solving the system symbolically for feedback simulations was infeasible.
+Due to the complex nonlinear state space equations, solving the system symbolically for feedback simulations was infeasible.
 Matlab would compute for days without result and without time estimate.
 Filling in certain parameters with numerical values made a semi-symbolic solution possible, which behaved nicely in simulations.
 However, the decoupling matrix had a condition number in the order of $10^5$ making the system very susceptible to any noise or uncertainties.
 The equations for calculating the necessary actuation also contained very large numbers (order of $10^{80}$) divided by other large numbers meaning that any discrepancies would crash the airplane.
 
 Solving the inverse numerically on the fly was also considered but had similar issues as well as being computationally heavy for a small computer as the Pixhawk 1.
-The numerical approach also left no guarantees on existence of solution, because theoretically some of the integrals do have singularities and so the decoupling matrix dependent on them can theoretically be non-invertible in certain (unlikely) situations.
+The numerical approach also left no guarantees on existence of solution, since some of the integrals do have singularities and thus the decoupling matrix dependent on them could theoretically be non-invertible in certain (unlikely) situations.
 
-After spending too much time trying to work around these issues the plan was abandoned.
+Due to these issues the Feedback Linearization controller was abandoned.
 
 
 \subsection{Simulink}
 The full non linear state space equations derived above in section \ref{sec:fulleqs} were put in a matlab function block surrounded by state integrators to generate the full state.
 Parameters were either measured or estimated to complete the numerical simulator.
-Controllers could then be tested and evaluated quickly.
-An instant 3D render of the simulation was also added through Simulinks VR support blocks.
+Different controllers could then be tested and evaluated quickly.
+An instant 3D render of the simulation was also added through Simulinks VR support blocks to provide visual feedback; an easy way to tell if something is very wrong without waiting for the entire simulation to finish.
 
 %TODO: INSERT PICTURE OF SIMULATOR
 
@@ -300,17 +302,19 @@ Mathworks has support for the embedded coder to directly upload apps into the PX
 The firmware has to be flashed to PX4 on the Pixhawk, files modified on the SD card and a wide range of supporting softwares must be installed on the host computer.
 Mathworks has great documentation on the subject.\cite{MathworksPX4}
 
-\subsection{Initial testing on Bixler}
-The evaluate the firmware/simulink controller deployment into a Pixhawk a Bixler was used.
-The Pixhawk was put into the Bixler to replace the receiver inside, necessary hardware added and then a simple FlyByWire controller was implemented and uploaded into the Pixhawk from Simulink.
-Results were very good, the Bixler flew as expected and no issues with the software on-board.
+\subsection{Initial testing on a traditional fixed wing}
+To evaluate the firmware/simulink controller deployment into a Pixhawk a Bixler, a traditional fixed wing that is aerodynamically stable and thus doesn't need stabilization software, was used.
+The Pixhawk was put into the Bixler to replace the receiver inside, necessary hardware added and then a simple Fly-By-Wire controller was implemented and uploaded into the Pixhawk from Simulink.
+Results were very good, the Bixler flew as expected and displayed no issues with the software on-board.
 This was done as a sanity check for the complete software to hardware deployment strategy.
 
 
 \subsection{P2-controller}
-The Pixhawk was then removed from the Bixler and placed on the flying board to test a simple version of the full controller.
-The P2 controller \cite{P2} was implemented along with separate tuning for the three axis but a hardcoded, non adjustable, reference attitude of nose up, belly to the north, no logs and no other features.
-The controller can be seen in Figure \ref{fig:P2_simulink}
+The Pixhawk was removed from the Bixler and placed on the flying board to test a simple version of the full controller.
+The P2 controller \cite{P2} was implemented along with separate tuning for the three axis.
+The reference attitude was hard coded to be nose up, belly to the north.
+No logs and no other features were implemented for this first test.
+The controller is shown in Figure \ref{fig:P2_simulink}
 
 The implemented controller can thus be thought of as a set of three P-D controllers, one for each axis.
 The board would hover, but no logs could initially be produced due to a bug in the embedded coder in Simulink.
@@ -320,7 +324,7 @@ This also allowed the PWM frequency to match the main control loop as anything a
 \begin{figure}
     \center
     \includegraphics[width=0.9\textwidth]{P2.PNG}
-    \caption{The central P2 controller. The manual switches are for debugging, and the very right side block separates the P-D ratios for the propellers (z-axis) from the rest of the system as they require separate tuning.}
+    \caption{The central P2 controller. The manual switches are for debugging, and the very right side block separates the P-D ratios for the propellers (z-axis) from the rest of the system as they require separate tuning; the z-axis dynamics are fundamentally different from the x-, and y-axis dynamics. The rightmost block also converts desired angular acceleration rates to torques.}
     \label{fig:P2_simulink}
 \end{figure}
 
@@ -328,8 +332,9 @@ This also allowed the PWM frequency to match the main control loop as anything a
 Neither the EcoSoar nor the flying board have propeller wakes that cover the entire elevons.
 Therefor it is of interest to normalize the actuation signals to the elevons given the current state so that they produce the requested torque from the P2 controller in any given state.
 By assuming that the airflow inside the wake and outside the wake do not affect each other and that the dynamic pressure is the dominating effect a simple function can be found that takes the current rotational speeds of the propellers, the current velocity of the aircraft and requested torque around $x$ and $y$ axis and gives the deflection angle of the control surfaces.
+Simply put: more airflow over the elevon means they are more sensitive and need to actuate less to achieve the same torque as they would need to do at a lower airflow rate.
 
-We assume that damping due to rotational speeds do not exist, winglets have no $z$-offset, and no net pitch moment is created by the lift from the wings.
+It is assumed that damping due to rotational speeds do not exist, winglets have no $z$-offset, and no net pitch moment is created by the lift from the wings.
 The equations for torque around each axis then become:
 \begin{equation}
 \begin{split}
@@ -337,15 +342,16 @@ The equations for torque around each axis then become:
     \tau_y =& x_f ( F_{L_T} + F_L + F_{R_T} + F_R) \\
     \tau_z =& y_T ( T_L - T_R)
 \end{split}
+\label{axistorques}
 \end{equation}
-which indicates that the elevons force per deflection is proportional to the airflow speed over them squared.
+which indicate that the elevon force per deflection is proportional to the airflow speed over them squared.
 The P2 controller outputs desired angular acceleration, $\dot{\omega_i}$, not torque.
 Necessary torque, $\tau_i$, for axis $i$ is given by
 \begin{equation}
     \tau_i = \dot{\omega_i} I_i
 \end{equation}
-Solving for differential thrust is possible.
-Taking the inertia around each axis into account the necessary deflection for each elevon, $u_{\delta_i}$ can be solved for given the current state:
+%Solving for differential thrust is possible.
+Taking the inertia around each axis into account, as well as substituting in suitable expressions where needed, the necessary deflection for each elevon, $u_{\delta_i}$ can be solved for, from equation \ref{axistorques}, given the current state:
 \begin{equation}
 \begin{split}
     u_{\delta_L} =& \frac{-0.5 \tau_y}{k_1 sgn(v_x) v^2 + k_2 \omega_L^2} - \frac{0.5 \tau_x}{k_3 sgn(v_x) v^2 + k_4\omega_L^2} \\
@@ -372,7 +378,8 @@ By flying normally with a standard Fly By Wire system and PD controller for pitc
 This means that one can assume the contribution from the terms $k_2$ and $k_4$ are included in to be zero.
 Since velocity and the ratio torque/actuation is known the remaining parameters can be found.
 
-For this very task an 80\% scale model of the flying plywood board was built, but with a single engine in the front instead of two.
+For this very task an 80\% scale model (there was no more wood available this day) of the flying plywood board was built, but with a single engine in the front instead of two.
+
 
 \begin{figure}
     \center
@@ -381,15 +388,20 @@ For this very task an 80\% scale model of the flying plywood board was built, bu
     \label{fig:singleengine}
 \end{figure}
 
-This test only gives a rough estimate, however, since the propeller wash does cover the elevons partially.
+This test, however, only gives a rough estimate since the propeller wash does partially cover the elevons.
 A rear mounted propeller would have been better but there was no way to keep the c.g. in front of the center of pressure without a complete redesign of the aircraft had the engine been mounted in the rear.
-Therefore the parameter estimations found through flying this board only serve to find rough estimates good enough for flying the dual engine one without crashing instantly.
+Therefore the parameter estimations found through flying this board only serves to find rough estimates good enough for flying the dual engine flying board without crashing instantly.
 
 \subsection{Full controller diagram}
-The full controller has an adjustable reference quaternion generated by user inputs on the transmitter, a manual emergency motor and servo shutdown, an altitude holder, SD signal logging blocks, a step response generator, low battery voltage protection cutoff and LED control for the onboard led to indicate arming state and GPS accuracy.
-
 The horizontal layout of the Simulink blocks in the full controller make an overview picture difficult.
 The full schematics can instead be found in the git repo.\cite{mycode}
+A written overview is provided instead:
+The reference attitude is obtained from transmitter inputs.
+The measured state is passed into the P2 controller along with the reference attitude.
+The P2 controller, together with the torque translator, provides actuator outputs.
+A switch on the transmitter allows for consistent step functions to be sent to the reference attitude generator.
+Another switch sends the emergency shutdown command stopping all motors ans servos.
+Secondary subroutines, such as altitude holding, low voltage cutoffs, LED control for visual feedback, and SD logging blocks, are also implemented along with the main controller.
 
 In Figure \ref{fig:q_wf} the quaternion and angular rates from the Extended Kalman Filter for attitude estimation in the firmware is read.
 In Figure \ref{fig:qref} the reference quaternion is generated.
@@ -430,18 +442,21 @@ A 3 Volt per cell cutoff results in the resting voltage stabilizing around 3.5 w
 
 The plywood board can hover and transition into flight.
 Further tuning would be preferable but not possible for the scope of this thesis due to time and weather constraints.
+Figures showing the step response in pitch and roll will be shown while both flying and hovering.
+Steps in yaw has been omitted due to their strong similarity with multirotor steps in pitch or roll.
+All flights have taken place outside in winds of roughly 5m/s.
 
 \subsection{Performance in Simulations}
-Since all parameters are well known/set in the simulator and assumptions are the same for the simulator and controller the system works very well in simulation for a very wide range of parameters and settings.
-Therefore it does not yield any valuable tuning reference frame, only general info like testing handedness of quaternions and whether the controller is at all feasible.
+Since all parameters are well known or set in the simulator and assumptions are the same for the simulator and controller, the system works very well in simulation for a very wide range of parameters and settings. Almost for any set of parameters the controller would easily stabilize the system.
+Therefore it does not yield any valuable tuning information, only general info like testing handedness of quaternions and whether the controller is at all feasible.
 
 
 %TODO: Maybe add graphs of simulations?
 %The simulations worked so well with almost any settings maybe they aren't of interest?
 
 \subsection{Performance of the flying plywood board in reality}
-The board hovers and flies controllably.
-To achieve very smooth flight more tuning is necessary but the fact that it flies at all without the need of any switching controller indicates that the concept of normalizing the sensitivity of the control surfaces is very much valid.
+The board hovers and flies controllably, in the sense that it does not crash immediately and can reject smaller disturbances.
+To achieve very smooth flight more tuning is necessary, but the fact that it flies at all without the need of any switching controller indicates that the concept of normalizing the sensitivity of the control surfaces (with respect to the airflow over them, i.e. equation \ref{eq:TT}) is very much valid.
 
 In Figure \ref{fig:pitchstep} and \ref{fig:rollstep} step responses in pitch and roll while both hovering and flying are displayed.
 The responses are similar but of different gain.
@@ -466,7 +481,7 @@ The reference pitch had to be manually adjusted during the transition to maintai
 
 \begin{figure}[]
     \input{transfer.tex}
-    \caption{Step response in pitch when transitioning from hovering to flying. The end reference value had to be adjusted to keep the altitude above ground.}
+    \caption{Step response in pitch when transitioning from hovering to flying. The end reference value had to be adjusted to keep the altitude above ground. The adjustment happened around 1.5 seconds.}
     \label{fig:transition}
 \end{figure}
 
@@ -481,11 +496,11 @@ A perfectly mechanically trimmed version of the flying board would not need the 
 A slow integrator would also be able to adjust for varying gain due to unforeseen nonlinear effects.
 
 The step responses in flying vs hovering mode have different gain which is most likely due to the $k_i$ parameters in the torque translator not being perfectly tuned.
-As stated the single engine board only served to find rough estimates to allow for controlled flight, which it did, but not perfect parameter estimations.
-The gain when flying was too low, indicating that the expected sensitivity of the elevon was higher, i.e. $k_1$ and $k_3$ are too big.
+As stated, the single engine board only served to find rough estimates to allow for controlled flight, which it did, but not perfect parameter estimations.
+The gain when flying was too low, which can be seen in figures \ref{fig:pitchstep} and \ref{fig:rollstep} by the steady state error, indicating that the expected sensitivity of the elevon was higher, i.e. $k_1$ and $k_3$ are too big.
 Physically this means that the external airflow has a smaller effect than anticipated which probably is due to the propellers wake covering a much bigger proportion of the elevon than expected.
-Either a few more test flights in calm wind to tune those parameters in, or some form of online L1 parameter estimation/correction would probably solve this issue.
-When moving this control system to the very similar EcoSoar an online parameter estimation algorithm would probably be preferable to avoid the difficult tuning process which comes with the risk of crashing; rebuilding an EcoSoar is not only difficult and time consuming but more expensive than buying some more plywood at the local market.
+Either more test flights in calm wind to tune those parameters in, or some form of online L1 parameter estimation would probably solve this issue.
+When moving this control system to the very similar EcoSoar an online parameter estimation algorithm would probably be preferable, due to the difficult tuning process which comes with the risk of crashing; rebuilding an EcoSoar is not only difficult and time consuming but more expensive than buying some more plywood at the local market.
 
 In the step responses while flying some small oscillations can be seen.
 This seems to correspond to oscillation frequency that can be seen in the elevon servos when the system has mechanical play.
@@ -493,9 +508,10 @@ The linkage from servo to elevon have play that results in maybe a 5 degree unce
 When flying the dynamic pressure is higher on the elevons and maybe that increased pressure is enough to initiate the oscillations during transitioning.
 Either a higher precision linkage or a higher quality servo might remove these oscillations.
 
-The vast number of logged/recorded crashed throughout this thesis (in excess of 40) would have been alleviated with a vicon/motion capture system.
-Many of the initial crashes were simple quaternion bugs that would have been found by just moving and rotating the aircraft in am external known coordinate system.
-This prolonged the development time significantly and the scarce resources, along with limited information about the surrounding supply chains, made progress even more slow and uncertain.
+The vast number of recorded crashes throughout this thesis (in excess of 40) would have been alleviated with a motion capture system.
+Many of the initial crashes were simple quaternion bugs that would have been found by just moving and rotating the aircraft in an external known coordinate system.
+The simulator did not show these issues as it too, had the same bugs canceling the effects.
+This prolonged the development time significantly and the scarce resources, along with limited information about the surrounding supply chains, made progress slow and uncertain leading to the final time constraints limiting this projects full potential.
 
 Another issue that made development very difficult is the very limited hardware and processing power of the Pixhawk 1.
 Although this system in its now working state can be run on the Pixhawk 1, development should have been done on something more powerful to allow for all the debugging, logging and testing unoptimized algorithms.
@@ -504,7 +520,7 @@ The actual algorithm would not take many rows of code nor much resources.
 What causes the slowdowns is probably the unoptimized simulink generated c++ code that now needs to handle everything from receiving RC input to generating PWM signals.
 In the firmware these tasks have been more optimized and coded for the specific hardware in a more dedicated way.
 
-Throughout this project two Simulink bugs have been found, reported and fixes were received from Mathworks.
+Throughout this project two Simulink bugs have been found and reported, and fixes were received from Mathworks.
 The first one caused several, hard to debug, mid flight reboots resulting in the aircraft falling out of the sky.
 This was extra difficult to understand because Mathworks has implemented the SD logging feature such that upon reboot it overwrites all log files up until the reboot, leaving the developer with no data to look at other than a hex dump with the stack pointer location from the firmware.
 Mathworks support was great at helping fix this issue by providing custom SD logging code.
@@ -516,19 +532,20 @@ Mathworks supplied custom code to fix this as well; the Mathworks support from t
 Next big issue with the Simulink - Pixhawk interaction was a silent slowdown.
 Even when the Simulink app was set to, and reported, a specific refresh rate it would not agree with reality.
 Many weeks were spent tuning and calibrating the flying board for just hovering without much success. 
-The board would barely hover, and sometimes without wind hover acceptably but any disturbances would easily ground it involuntarily. 
-After too much time a step response signal was implemented and the steps made to be one second long.
+The board would barely hover, and sometimes without wind hover acceptably but any disturbances would easily ground it. 
+A step response signal was implemented and the steps made to be one second long.
 The first time it was tested the steps were 6 seconds long in reality, but the log files indicated correct sampling frequency and duration for the steps.
 Turns out that getting a dual rotor tail sitter to hover is very difficult at an effective 20Hz sampling frequency.
+The system dynamics are just too fast for a controller that slow.
 Disabling all logging and timing the step responses externally with a stopwatch verified that the issue was still with the logging.
 The Mathworks supplied hard fault fix meant that the log files would be opened, written to and closed on every iteration of the control system.
 Opening and closing files is a very expensive task so the system was redesigned to log everything in one big file to be separated externally after the flight.
 That reduced the time dilation significantly but not enough.
 A reduced logging frequency got the time error within 1\% and had to suffice.
 This meant that the controller would run at the intended 120 Hz but only every third datapoint would be logged.
-Once this was fixed the flying board hovered nicely corrected itself much more smoothly.
+Once this was fixed the flying board hovered nicely and corrected itself much more smoothly.
 
-All these time delays meant that very little time was left to the final testing and evaluation, but the data acquired and presented here do seem to indicate that what was set out to test is possible:
+All these time delays meant that very little time was left to the final testing and evaluation, but the data acquired and presented here seem to indicate that what was set out to test is possible:
 A non switching controller can handle the entire flight envelope of a VTOL capable flying fixed wing when the control surface forces are normalized.
 To further improve this some wind tunnel tests and maybe airflow sensors on the control surfaces would help further understand how to tune this system, maybe even remove the tuning steps completely.
 
@@ -536,16 +553,21 @@ To further improve this some wind tunnel tests and maybe airflow sensors on the 
 The work presented in this thesis aims to help a developing country ease a problematic infrastructure.
 No money or resources has been brought out of the country.
 
-Testing drones around MUST requires quite a lot of planning; crashing a drone into a family home could potentially injure people and destroy property.
-All testing has therefor been carefully planned and carried out in areas void of people and their property.
+Testing drones around Malawi University of Science and Technology, MUST, requires quite a lot of planning; crashing a drone into a family home could potentially injure people and destroy property.
+All testing has therefore been carefully planned and carried out in areas void of people and their property.
 Testing expensive equipment in air also tends to bring a large crowd of children that come running as testing starts.
-Bringing a translator is a very good idea as they can explain the safe, and non safe, areas for the children to be in.
+Bringing a translator is a very good idea as they can explain the safe, and non safe, areas for the children.
 In this thesis that has always been the case.
+
+If VTOL can be implemented in a production environment centered around the EcoSoar for example blood samples could be delivered where roads aren't good enough for normal vehicles.
+Modifying the EcoSoar for military use is pretty straight forward, but military drones have existed for quite some time and do not pose any new risks to this technology.
 
 
 \subsection{Conclusion}
 The attitude controller works, but before deployment it would need more tuning and logged data to be trusted.
 The initial problem set out to solve in this thesis can be deemed shown feasible but not fully attained.
+Deployment on an actual EcoSoar should be straight forward in line with adjustments proposed in this thesis.
+
 Developing drones is probably better left to be done in labs better equipped, whereas proper testing and evaluation of end of development phase systems can be done in Malawi.
 
 %\begin{itemize}
@@ -559,6 +581,21 @@ Developing drones is probably better left to be done in labs better equipped, wh
 Michel Goossens, Frank Mittelbach, and Alexander Samarin. 
 \textit{The \LaTeX\ Companion}. 
 Addison-Wesley, Reading, Massachusetts, 1993.
+
+\bibitem{EcoSoarCost}
+https://www.me.vt.edu/ecosoarmalawi/
+
+\bibitem{swoopaero}
+https://swoop.aero/
+
+\bibitem{wingcopter}
+https://wingcopter.com/
+
+\bibitem{zack}
+Standridge, Zachary Dakotah
+\textit{Design and Development of Low-cost Multi-function UAV Suitable for Production and Operation in Low Resource Environments}http://hdl.handle.net/10919/83877
+https://vtechworks.lib.vt.edu/handle/10919/83877
+
 
 \bibitem{einstein} 
 Albert Einstein. 
@@ -607,6 +644,13 @@ Sixth Edition
 McGraw-Hill Education
 ISBN 978-1-259-12991-9
 
+\bibitem{liftdragpng}
+https://creativecommons.org/licenses/by-sa/4.0
+https://commons.wikimedia.org/wiki/File:Airfoil\_lift\_and\_drag.svg
+
+\bibitem{chord}
+https://commons.wikimedia.org/wiki/File:Chord\_length\_definition\_(en).svg
+
 \bibitem{pixhawkthesis}
 Ryan G. Beall
 June 2017
@@ -619,6 +663,7 @@ https://se.mathworks.com/hardware-support/px4-autopilots.html
 
 \bibitem{mycode}
 https://github.com/Trobolit/MastersThesis\_matlab
+
 
 \end{thebibliography}
 

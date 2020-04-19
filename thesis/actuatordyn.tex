@@ -1,5 +1,5 @@
 \subsection{Actuator dynamics}
-The actuators onboard are not direct term but contain some dynamics.
+The actuators onboard contain some dynamics since they consist of physical entities that need to be moved and then alter the airstream to produce the inputs to our system.
 In this thesis they will be modelled as first order systems.
 \subsubsection{Elevon dynamics}
 Given an input signal $u_{\delta_i}$ for elevon $i$ we model the deflection, $\delta_i$, like so:
@@ -13,4 +13,4 @@ Given an input signal $u_{\omega_i}$ we model the motor dynamics as so:
     \dot{\omega_i} =  K_{\omega_i}(-\omega_i + u_{\omega_i})
 \end{equation}
 
-The parameters $K_{\omega_i}$ and $K_{\delta_i}$ are chosen to roughly match the response times listen in the Servo and ESC manufacturers data sheets.
+The parameters $K_{\omega_i}$ and $K_{\delta_i}$ are chosen to roughly match the response times listed in the Servo and ESC manufacturers data sheets.
