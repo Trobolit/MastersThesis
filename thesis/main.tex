@@ -56,18 +56,23 @@
 \end{titlepage}
 
 \abstract
-A non switching, non linear, quaternion based attitude controller of type P2 controller, together with a sensitivity normalizing function for the control surfaces has been simulated and implemented on a flying fixed wing with non vectored engines.
+A non switching, non linear, quaternion based attitude P2 controller, together with a sensitivity normalizing function for the control surfaces has been simulated and implemented on a flying fixed wing with non vectored engines.
 In simulations the controller worked well in all flight modes, hovering, transition and flying, and also rejected a simple wind disturbance in all modes.
 The first implementation on hardware did not work due to programming errors causing crashes with unrepairable damages.
 The second aircraft was built out of a piece of plywood to further simplify the testing and tolerate more crashes.
-A non-existing airfoil, flat plate, has no effects due to camber and is therefor easier to both simulate and tune.
+A flat plate, a flying piece of plywood, is not a proper airfoil and so has no effects due to camber.
+It is therefore easier to both simulate and tune.
 The controller worked acceptable in reality, but does need further tuning.
-Due to time constraints the weighing of airflow inside and outside the propeller wash could not be fully determined resulting in different gain in the different flight modes, but initial estimation of the parameters were enough to achieve robust, stable hovering transitioning and flying even in quite strong wind. %(more than 5 m/s).
-The controller was never implemented on a EcoSoar due to time constraints, but the proof of concept flying piece of plywood proved the controller feasible for future embedding in a modified EcoSoar. 
+Due to time constraints the weighing of airflow inside and outside the propeller wash could not be fully determined resulting in different gain in the different flight modes, but initial estimation of the parameters were enough to achieve robust, stable hovering transitioning and flying even in winds stronger than 5m/s.% quite strong wind. %(more than 5 m/s).
+The controller was not implemented on an EcoSoar due to time constraints, but the proof of concept flying piece of plywood proved the controller feasible for future embedding in a modified EcoSoar. 
 A VTOL capable EcoSoar could be used for critical deliveries in for example the medical field in Malawi where suboptimal infrastructure is hindering progress.
+The need for medical supplies around the rural parts of Malawi is great but roads and services are not capable yet.
+Since a VTOL flying wing with delivery capabilities can be both cheap to build, and deliver supplies to areas without an airfield, it could accelerate development in Malawi and thus greatly increase quality of life for humans.
+
+%needs/benefits/value for humans and society can be stated more explicitly?
 
 \newpage
-\section*{\textit{Acknowledgements}}
+\section*{\textit{Acknowledgments}}
 
 I would like to extend a special thanks to Dr. Kochersberger at Virginia Tech who supplied me with the materials to finish this thesis.
 Fellow students, Avery and Brianna, also helped me a lot in understanding the building of an EcoSoar and general aerodynamics.
@@ -89,7 +94,7 @@ Without XP-EL this thesis would not have been possible, they donated a 3D-printe
 \section{Background}
 \input{background}
 
-\section{Problem Forumulation}
+\subsection{Problem Formulation}
 \input{problemformulation}
 
 \section{Theory}
@@ -212,6 +217,7 @@ In order for the simulator to not be too time consuming to develop nor too compl
 
 
 \section{EcoSoar Replacement}
+\label{sec:EcoSoarReplacement}
 Due to logistical issues in Malawi, time limitations and limitations in the Pixhawk library provided by Mathworks, the full dual engine Eco-Soar could not be built.
 As a proof of concept a flying board was built to see if the controller would be feasible to implement on an EcoSoar in the future.
 The camber was removed from the design to allow for a wing that was easier to repair and more crash resistant.
@@ -490,14 +496,14 @@ The reference pitch had to be manually adjusted during the transition to maintai
 \section{Discussion and Future work}
 
 Some of the results presented are adjusted for mechanical trim.
-This system, contrary to the multirotor discussed in \cite{P2}, does need an integrator since it is not embedded in the system by nature.
+The implementation of the developed controller on a flying wing, contrary to the multirotor discussed in \cite{P2}, does need an integrator since it is not embedded in the system by nature.
 Any small movement in c.g. or airflow changes the static pitch moment and thus an offset in control is needed.
 A perfectly mechanically trimmed version of the flying board would not need the integrator but the current setup does not allow for fine tuning.
 A slow integrator would also be able to adjust for varying gain due to unforeseen nonlinear effects.
 
 The step responses in flying vs hovering mode have different gain which is most likely due to the $k_i$ parameters in the torque translator not being perfectly tuned.
 As stated, the single engine board only served to find rough estimates to allow for controlled flight, which it did, but not perfect parameter estimations.
-The gain when flying was too low, which can be seen in figures \ref{fig:pitchstep} and \ref{fig:rollstep} by the steady state error, indicating that the expected sensitivity of the elevon was higher, i.e. $k_1$ and $k_3$ are too big.
+The gain when flying was too low, which can be seen in Figures \ref{fig:pitchstep} and \ref{fig:rollstep} by the steady state error, indicating that the expected sensitivity of the elevon was higher, i.e. $k_1$ and $k_3$ are too big.
 Physically this means that the external airflow has a smaller effect than anticipated which probably is due to the propellers wake covering a much bigger proportion of the elevon than expected.
 Either more test flights in calm wind to tune those parameters in, or some form of online L1 parameter estimation would probably solve this issue.
 When moving this control system to the very similar EcoSoar an online parameter estimation algorithm would probably be preferable, due to the difficult tuning process which comes with the risk of crashing; rebuilding an EcoSoar is not only difficult and time consuming but more expensive than buying some more plywood at the local market.
@@ -550,23 +556,32 @@ A non switching controller can handle the entire flight envelope of a VTOL capab
 To further improve this some wind tunnel tests and maybe airflow sensors on the control surfaces would help further understand how to tune this system, maybe even remove the tuning steps completely.
 
 \subsection{Ethics}
-The work presented in this thesis aims to help a developing country ease a problematic infrastructure.
+The work presented in this thesis aims to help a developing country ease a problematic infrastructure such as lack of roads, poor road quality, lack of telecommunication, lack of hospitals, lack of transportation logistics, etc.
 No money or resources has been brought out of the country.
 
 Testing drones around Malawi University of Science and Technology, MUST, requires quite a lot of planning; crashing a drone into a family home could potentially injure people and destroy property.
 All testing has therefore been carefully planned and carried out in areas void of people and their property.
 Testing expensive equipment in air also tends to bring a large crowd of children that come running as testing starts.
-Bringing a translator is a very good idea as they can explain the safe, and non safe, areas for the children.
-In this thesis that has always been the case.
+Bringing a translator is necessary as they can explain the safe, and non safe, areas for the children; normal barriers such as tape or ropes tend to be not sufficient.
+In this thesis a translator has always been present during field work.
 
 If VTOL can be implemented in a production environment centered around the EcoSoar for example blood samples could be delivered where roads aren't good enough for normal vehicles.
-Modifying the EcoSoar for military use is pretty straight forward, but military drones have existed for quite some time and do not pose any new risks to this technology.
+If the material presented in this thesis sees widespread use the increase in drone usage may pose new risks to a society otherwise lacking technology in every day life.
+Risks such as crashes in populated areas and usage of drones by uneducated people can lead to human injury.
+It is therefore vital that regulations are put in place at a national level to ensure drones are used safely by trained persons and flown in a safe manner.
+The African Drone and Data Academy is working towards that goal.
+%Modifying the EcoSoar for military use is pretty straight forward, but military drones have existed for quite some time and do not pose any new risks to this technology.
 
 
 \subsection{Conclusion}
 The attitude controller works, but before deployment it would need more tuning and logged data to be trusted.
-The initial problem set out to solve in this thesis can be deemed shown feasible but not fully attained.
-Deployment on an actual EcoSoar should be straight forward in line with adjustments proposed in this thesis.
+%The initial problem set out to be solved in this thesis can be deemed shown feasible but not fully attained.
+A mathematical model was developed and used to solve the problem in this thesis.
+The controller works at a proof of concept level, but the controller was never implemented on an actual EcoSoar.
+The problem in this thesis was thus only mostly solved. 
+Parts of the initial problem formulation remain to be solved.
+
+Deployment on an actual EcoSoar should be straight forward taking into account the adjustments laid out in Section \ref{sec:EcoSoarReplacement}.
 
 Developing drones is probably better left to be done in labs better equipped, whereas proper testing and evaluation of end of development phase systems can be done in Malawi.
 
